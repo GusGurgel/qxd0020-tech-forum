@@ -17,7 +17,7 @@ function haddleSubmit(e) {
 <template>
   <main class="mt-5">
     <div class="row d-lg-flex justify-content-center">
-      <div class="border rounded p-3 col-lg-3">
+      <div class="border rounded p-3 col-lg-3 bg-light shadow">
         <div class="row">
           <div class="col-sm-12">
             <div class="border-bottom border-dark p-3 mb-3 d-flex align-items-center justify-content-center">
