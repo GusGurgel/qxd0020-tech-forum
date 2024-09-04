@@ -13,6 +13,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fontsource/lexend-deca": "^5.0.14",
+    "@phosphor-icons/vue": "^2.2.1",
     "bootstrap": "^5.3.3",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
