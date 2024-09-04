@@ -16,26 +16,28 @@ Gustavo Gurgel Medeiros, 539226, Ciência da Computação
 
 ## Entidades ou tabelas do sistema
 
-- Usuário
-- Tópico
-- Resposta
-- Conjunto
+- Usuário (User)
+- Resposta (Response)
+- Tópico (Thread)
+- Conjunto (ThreadSet)
 
 ## Principais funcionalidades da aplicação
 
-* Todos os Usuários
-    * Podem ver todos os conjuntos de tópicos e respostas de tópicos
+- Todos os Usuários
 
-* Usuários registrados
-    * Criar tópicos 
-    * Responder tópicos
+  - Podem ver todos os conjuntos de tópicos e respostas de tópicos
 
-* Adiministradores
-    * Fixar tópicos
-    * Excluir tópicos
-    * Criar novos conjuntos
-    * Banir usuários
-    * Mover tópico de um conjunto para outro
+- Usuários registrados
+
+  - Criar tópicos
+  - Responder tópicos
+
+- Adiministradores
+  - Fixar tópicos
+  - Excluir tópicos
+  - Criar novos conjuntos
+  - Banir usuários
+  - Mover tópico de um conjunto para outro
 
 ## Tecnologias e frameworks utilizados
 
@@ -48,16 +50,14 @@ Gustavo Gurgel Medeiros, 539226, Ciência da Computação
 
 - Strapi
 
-
 ## Operações implementadas para cada entidade da aplicação
 
-
-| Entidade| Criação | Leitura | Atualização | Remoção |
-| --- | --- | --- | --- | --- |
-| Usuário | X | X |  | X |
-| Tópico | X  | X |  X | X |
-| Resposta | X |  X  | X  | X |
-| Conjunto | X |  X  | X | X |
+| Entidade | Criação | Leitura | Atualização | Remoção |
+| -------- | ------- | ------- | ----------- | ------- |
+| Usuário  | X       | X       |             | X       |
+| Tópico   | X       | X       | X           | X       |
+| Resposta | X       | X       | X           | X       |
+| Conjunto | X       | X       | X           | X       |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
