@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { Thread } from "@/types/index.js"
-import router from "@/router";
+import { useRouter } from "vue-router";
 
+
+const router = useRouter()
 const props = defineProps<Thread>()
 
 function goToThreadPage() {

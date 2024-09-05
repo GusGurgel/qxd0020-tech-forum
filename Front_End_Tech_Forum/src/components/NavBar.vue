@@ -1,7 +1,9 @@
 <script setup>
 import { RouterLink } from 'vue-router';
-import router from '@/router';
+import { useRouter } from 'vue-router';
 import { PhUser, PhHouseSimple } from '@phosphor-icons/vue';
+
+const router = useRouter()
 </script>
 
 <template>

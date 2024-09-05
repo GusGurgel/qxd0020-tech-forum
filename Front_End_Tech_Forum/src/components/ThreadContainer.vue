@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import ThreadEntry from '@/components/ThreadEntry.vue';
 import type { Thread } from "@/types/index.js"
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
+const id = Number(route.params.id)
 
 const threadData: Thread[] = [
     {
@@ -23,6 +27,7 @@ const threadData: Thread[] = [
 </script>
 
 <template>
+    id: {{ id }}
     <table class="table table-hover shadow">
         <tbody>
             <ThreadEntry v-for="thread in threadData" :key="thread.id" :id="thread.id" :title="thread.title"

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { ThreadSet } from "@/types/index.js"
-import router from "@/router";
+import { useRouter } from "vue-router";
 
 const props = defineProps<ThreadSet>()
+const router = useRouter()
 
 function goToThreadSetPage() {
     router.push(`/threadset/${props.id}`)

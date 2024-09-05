@@ -1,0 +1,20 @@
+# Vars
+
+@baseURL = http://localhost:1337
+
+### thread-sets
+
+### findAll
+GET {{baseURL}}/api/thread-sets
+
+### store
+
+POST {{baseURL}}/api/thread-sets
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "Thread 1",
+        "description": "Desc 1"
+    }
+}
