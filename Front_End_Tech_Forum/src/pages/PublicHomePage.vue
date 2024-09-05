@@ -1,9 +1,9 @@
 <script setup>
-import ThreadContainer from '@/components/TableContainer.vue';
+import ThreadSetContainer from '@/components/ThreadSetContainer.vue';
 </script>
 
 <template>
   <main>
-    <ThreadContainer />
+    <ThreadSetContainer />
   </main>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SetEntry from './SetEntry.vue';
+import ThreadSetEntry from './ThreadSetEntry.vue';
 import type { ThreadSet } from "@/types/index.js"
 
 const threadSetsData: ThreadSet[] = [
@@ -19,7 +19,7 @@ const threadSetsData: ThreadSet[] = [
 <template>
     <table class="table table-hover shadow">
         <tbody>
-            <SetEntry v-for="threadSet in threadSetsData" :key="threadSet.id" :id="threadSet.id" :name="threadSet.name"
+            <ThreadSetEntry v-for="threadSet in threadSetsData" :key="threadSet.id" :id="threadSet.id" :name="threadSet.name"
                 :description="threadSet.description" />
         </tbody>
     </table>
