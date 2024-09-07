@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "threads",
+  "info": {
+    "singularName": "thread",
+    "pluralName": "threads",
+    "displayName": "Thread",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "isFixed": {
+      "type": "boolean"
+    },
+    "thread_set": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::thread-set.thread-set"
+    }
+  }
+}

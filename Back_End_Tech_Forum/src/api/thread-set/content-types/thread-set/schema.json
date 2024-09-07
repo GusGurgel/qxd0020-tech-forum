@@ -4,7 +4,8 @@
   "info": {
     "singularName": "thread-set",
     "pluralName": "thread-sets",
-    "displayName": "ThreadSet"
+    "displayName": "ThreadSet",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true

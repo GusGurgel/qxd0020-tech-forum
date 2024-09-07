@@ -362,12 +362,50 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiThreadThread extends Schema.CollectionType {
+  collectionName: 'threads';
+  info: {
+    singularName: 'thread';
+    pluralName: 'threads';
+    displayName: 'Thread';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String;
+    isFixed: Attribute.Boolean;
+    thread_set: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'api::thread-set.thread-set'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiThreadSetThreadSet extends Schema.CollectionType {
   collectionName: 'thread_sets';
   info: {
     singularName: 'thread-set';
     pluralName: 'thread-sets';
     displayName: 'ThreadSet';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -829,6 +867,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::thread.thread': ApiThreadThread;
       'api::thread-set.thread-set': ApiThreadSetThreadSet;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
