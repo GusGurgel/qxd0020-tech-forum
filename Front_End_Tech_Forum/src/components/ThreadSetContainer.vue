@@ -6,6 +6,10 @@ const props = defineProps<{threadSets: ThreadSet[]}>();
 </script>
 
 <template>
-    <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id" :id="threadSet.id" :name="threadSet.name"
-        :description="threadSet.description" />
+    <table class="table table-hover">
+        <tbody>
+            <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id" :id="threadSet.id" :name="threadSet.name"
+                :description="threadSet.description" />
+        </tbody>
+    </table>
 </template>
