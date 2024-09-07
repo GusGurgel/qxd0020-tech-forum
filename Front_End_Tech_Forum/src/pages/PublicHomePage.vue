@@ -8,12 +8,14 @@ const ThreadSets = ref([] as ThreadSet[])
 const error = ref<Error>()
 const loading = ref(true)
 
-onMounted( async () => {
+console.log(ThreadSets.value)
+
+onMounted(async () => {
   try {
     const { data } = await api.get("/thread-sets")
     const threadData = data.data;
 
-    for(const thread of threadData) {
+    for (const thread of threadData) {
       ThreadSets.value.push({
         id: thread.id,
         name: thread.attributes.name,
@@ -22,7 +24,7 @@ onMounted( async () => {
     }
 
     console.log(ThreadSets.value)
-  } catch (e){
+  } catch (e) {
     error.value = e as Error
   } finally {
     loading.value = false
@@ -32,9 +34,21 @@ onMounted( async () => {
 
 <template>
   <main>
-    <div v-if="loading" class="spinner-border text-dark" role="status">
-      <span class="sr-only"></span>
+    <div v-if="error" class="alert alert-danger" role="alert">
+      Error trying to fetch threads set
     </div>
-    <!-- <ThreadSetContainer :threadSets="ThreadSets" /> -->
+    <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">
+      <div class="spinner-border text-dark" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
+    <ThreadSetContainer :threadSets="ThreadSets" />
   </main>
 </template>
+
+
+<style scoped>
+.vh-80 {
+  height: 80vh;
+}
+</style>

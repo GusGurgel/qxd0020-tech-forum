@@ -11,6 +11,7 @@ const threadData: Thread[] = [
         id: 1,
         title: "How to make Minecraft",
         createAt: new Date(0),
+        isFixed: false,
         author: {
             name: "Gustavo"
         }
@@ -19,6 +20,7 @@ const threadData: Thread[] = [
         id: 2,
         title: "Resolving clang bugs",
         createAt: new Date(0),
+        isFixed: false,
         author: {
             name: "Pedro"
         }

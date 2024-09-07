@@ -1,8 +1,9 @@
 export type Thread = {
-  id: number,
-  title: string,
-  createAt: Date,
-  author: User,
+  id: number
+  title: string
+  isFixed: boolean
+  createAt: Date
+  author: User
 }
 
 export type ThreadSet = {

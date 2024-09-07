@@ -2,19 +2,54 @@
 
 @baseURL = http://localhost:1337
 
-### thread-sets
+### --------------
+###  thread-sets
+### --------------
 
 ### findAll
 GET {{baseURL}}/api/thread-sets
 
 ### store
-
 POST {{baseURL}}/api/thread-sets
 Content-Type: application/json
 
 {
     "data": {
-        "name": "Thread 1",
-        "description": "Desc 1"
+        "name": "Python",
+        "description": "The shitest lang in the world"
     }
 }
+
+### delete
+DELETE {{baseURL}}/api/thread-sets/2
+
+### ----------
+###  threads
+### ----------
+
+### findAll
+GET {{baseURL}}/api/threads
+
+### findAll com populate em ThreadSet
+GET {{baseURL}}/api/threads?populate=*
+
+### findAll para todas as Threads de um ThreadSetId=?
+@threadSetId=5
+GET {{baseURL}}/api/threads?filters[thread_set][id][$eq]={{threadSetId}}
+
+### store
+//cThreadSetId=4
+//pythonThreadSetId=5
+POST {{baseURL}}/api/threads
+Content-Type: application/json
+
+{
+    "data": {
+        "title": "Just don't work",
+        "thread_set": 5,
+        "isFixed": false
+    }
+}
+
+### delete
+DELETE {{baseURL}}/api/threads

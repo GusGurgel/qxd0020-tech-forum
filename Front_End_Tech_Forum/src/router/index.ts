@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PublicHomePage from '@/pages/PublicHomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
-import ThreadContainer from '@/components/ThreadContainer.vue'
+import ThreadSetPage from '@/pages/ThreadSetPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: '/threadset/:id',
       name: 'threadset',
-      component: ThreadContainer
+      component: ThreadSetPage
     }
   ]
 })
