@@ -8,8 +8,6 @@ const ThreadSets = ref([] as ThreadSet[])
 const error = ref<Error>()
 const loading = ref(true)
 
-console.log(ThreadSets.value)
-
 onMounted(async () => {
   try {
     const { data } = await api.get("/thread-sets")

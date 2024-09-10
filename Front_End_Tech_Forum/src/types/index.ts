@@ -2,7 +2,7 @@ export type Thread = {
   id: number
   title: string
   isFixed: boolean
-  createAt: Date
+  createdAt: Date
   author: User
 }
 

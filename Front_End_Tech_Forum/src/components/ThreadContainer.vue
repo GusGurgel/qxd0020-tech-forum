@@ -1,39 +1,15 @@
 <script setup lang="ts">
-import ThreadEntry from '@/components/ThreadEntry.vue';
 import type { Thread } from "@/types/index.js"
-import { useRoute } from 'vue-router';
+import ThreadEntry from '@/components/ThreadEntry.vue';
 
-const route = useRoute()
-const id = Number(route.params.id)
-
-const threadData: Thread[] = [
-    {
-        id: 1,
-        title: "How to make Minecraft",
-        createAt: new Date(0),
-        isFixed: false,
-        author: {
-            name: "Gustavo"
-        }
-    },
-    {
-        id: 2,
-        title: "Resolving clang bugs",
-        createAt: new Date(0),
-        isFixed: false,
-        author: {
-            name: "Pedro"
-        }
-    },
-]
+const props = defineProps<{threads: Thread[]}>()
 </script>
 
 <template>
-    id: {{ id }}
     <table class="table table-hover shadow">
         <tbody>
-            <ThreadEntry v-for="thread in threadData" :key="thread.id" :id="thread.id" :title="thread.title"
-                :author="thread.author" :createAt="thread.createAt" />
+            <ThreadEntry v-for="thread in threads" :key="thread.id" :id="thread.id" :title="thread.title"
+                :author="thread.author" :isFixed="thread.isFixed" :createdAt="thread.createdAt" />
         </tbody>
     </table>
 </template>
