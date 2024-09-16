@@ -2,8 +2,18 @@
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { PhUser, PhHouseSimple } from '@phosphor-icons/vue';
+import { useUserStore } from '@/stores/userStore'
 
 const router = useRouter()
+
+const userStore = useUserStore()
+console.log(userStore.username)
+console.log(userStore.isAuthenticated)
+
+function handleLogout() {
+    userStore.logout()
+    router.push("/")
+}
 </script>
 
 <template>
@@ -25,11 +35,17 @@ const router = useRouter()
                             <PhHouseSimple weight="fill" />
                         </RouterLink>
                     </li>
-                    <li class="nav-item">
+                    <li v-if="!userStore.isAuthenticated" class="nav-item">
                         <RouterLink class="lexend-font nav-link" to="/login">
                             Login
                             <PhUser weight="fill" />
                         </RouterLink>
+                    </li>
+                    <li v-else @click="handleLogout()" class="nav-item">
+                        <div class="lexend-font nav-link">
+                            Logout
+                            <!-- <PhUser weight="fill" /> -->
+                        </div>
                     </li>
                 </ul>
             </div>

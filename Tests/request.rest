@@ -53,3 +53,7 @@ Content-Type: application/json
 
 ### delete
 DELETE {{baseURL}}/api/threads
+
+###--- Login ---###
+GET {{baseURL}}/api/users/me?populate=role
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI2NDg4NzQ1LCJleHAiOjE3MjkwODA3NDV9.S83DZKnZJjlfmH_6YA6lwrOXbdkHicc35SOt8AW1FZA
