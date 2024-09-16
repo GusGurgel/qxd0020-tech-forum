@@ -12,6 +12,13 @@ export type ThreadSet = {
   description: string
 }
 
-export type User = {
+type Role = {
   name: string
+}
+
+export type User = {
+  id: number,
+  username: string,
+  role: Role,
+  email: string
 }

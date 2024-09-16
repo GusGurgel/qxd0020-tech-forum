@@ -33,10 +33,11 @@ onMounted(async () => {
 
 <template>
   <main>
+    <h1>Admin</h1>
     <div v-if="error" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
       <PhWarningOctagon :size="32" />
       <div class="ms-3">
-        Error trying to fetch <strong>Threads Sets</strong>
+        Error trying to fetch <strong>Threads Set</strong>
       </div>
     </div>
     <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">

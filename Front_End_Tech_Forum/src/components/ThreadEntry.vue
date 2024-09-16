@@ -30,7 +30,7 @@ function goToThreadPage() {
         </td>
         <td>
             <div>
-                Author: {{ author.name }}
+                Author: {{ author.username }}
             </div>
             <div>
                 Created: {{ `${createdAt.getFullYear()}/${createdAt.getMonth()+1}/${createdAt.getDate()}` }}

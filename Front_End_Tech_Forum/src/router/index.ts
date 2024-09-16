@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PublicHomePage from '@/pages/PublicHomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import ThreadSetPage from '@/pages/ThreadSetPage.vue'
+import NotFoundPage from '@/pages/NotFoundPage.vue'
+import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
+import { useUserStore } from '@/stores/userStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,8 +23,25 @@ const router = createRouter({
       path: '/threadset/:id',
       name: 'threadset',
       component: ThreadSetPage
-    }
+    },
+    {
+      path: '/admin',
+      component: AdminHomePage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    { path: '/:pathMatch(.*)*', component: NotFoundPage }
   ]
 })
 
 export default router
+
+
+router.beforeEach((to, from) => {
+  const userStore = useUserStore()
+  if(to.meta.requiresAuth && !userStore.isAuthenticated) {
+    return '/login'
+  }
+})

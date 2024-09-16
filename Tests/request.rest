@@ -7,7 +7,7 @@
 ### --------------
 
 ### findAll
-GET {{baseURL}}/api/thread-sets
+GET {{baseURL}}/api/thread-sets/4
 
 ### store
 POST {{baseURL}}/api/thread-sets

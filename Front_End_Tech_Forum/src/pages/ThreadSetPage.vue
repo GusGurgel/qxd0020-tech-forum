@@ -2,10 +2,12 @@
 import ThreadContainer from '@/components/ThreadContainer.vue';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
-import type { Thread } from '@/types';
+import type { Thread, ThreadSet } from '@/types';
 import { useRoute } from 'vue-router';
+import { PhWarningOctagon } from '@phosphor-icons/vue';
 
 const Threads = ref([] as Thread[])
+const ThreadSetData = ref({} as ThreadSet)
 const error = ref<Error>()
 const loading = ref(true)
 const route = useRoute()
@@ -13,17 +15,28 @@ const idThreadSet = Number(route.params.id)
 
 onMounted(async () => {
   try {
-    const { data } = await api.get(`/threads?filters[thread_set][id][$eq]=${idThreadSet}`)
-    const threadData = data.data;
+    const dataThreadSet = (await api.get(`/thread-sets/${idThreadSet}`)).data
+    const dataThread = (await api.get(`/threads?filters[thread_set][id][$eq]=${idThreadSet}`)).data
 
-    for (const thread of threadData) {
+    const threadSetData = dataThreadSet.data;
+    const threadsData = dataThread.data;
+    ThreadSetData.value = {
+      id: threadSetData.id,
+      name: threadSetData.attributes.name,
+      description: threadSetData.attributes.description
+    }
+
+    for (const thread of threadsData) {
       Threads.value.push({
         id: thread.id,
         title: thread.attributes.title,
         isFixed: thread.attributes.isFixed,
         createdAt: new Date(thread.attributes.createdAt),
         author: {
-            name: "Gurgel Temporário"
+            id: 1,
+            username: "Gurgel Temporário",
+            role: { name: "blabla" },
+            email: "bal@gmail.com"
         }
       })
     }
@@ -37,8 +50,11 @@ onMounted(async () => {
 
 <template>
   <main>
-    <div v-if="error" class="alert alert-danger" role="alert">
-      Error trying to fetch threads
+     <div v-if="error" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
+      <PhWarningOctagon :size="32" />
+      <div class="ms-3">
+        Error trying to fetch ThreadSet with <strong>id = {{ idThreadSet }}</strong>
+      </div>
     </div>
     <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">
       <div class="spinner-border text-dark" role="status">
