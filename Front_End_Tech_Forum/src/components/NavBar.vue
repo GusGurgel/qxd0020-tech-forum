@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { PhUser, PhHouseSimple } from '@phosphor-icons/vue';
+import { PhUser, PhHouseSimple, PhSignOut } from '@phosphor-icons/vue';
 import { useUserStore } from '@/stores/userStore'
 
 const router = useRouter()
@@ -44,7 +44,7 @@ function handleLogout() {
                     <li v-else @click="handleLogout()" class="nav-item">
                         <div class="lexend-font nav-link">
                             Logout
-                            <!-- <PhUser weight="fill" /> -->
+                            <PhSignOut />
                         </div>
                     </li>
                 </ul>

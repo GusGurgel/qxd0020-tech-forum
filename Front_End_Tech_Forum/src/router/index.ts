@@ -5,6 +5,7 @@ import ThreadSetPage from '@/pages/ThreadSetPage.vue'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
 import { useUserStore } from '@/stores/userStore'
+import UserPage from '@/pages/UserPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +32,13 @@ const router = createRouter({
         requiresAuth: true
       }
     },
-
+    {
+      path: '/user/me',
+      component: UserPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
     { path: '/:pathMatch(.*)*', component: NotFoundPage }
   ]
 })
