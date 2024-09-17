@@ -12,9 +12,8 @@ const error = ref<Error>()
 const router = useRouter()
 const userStore = useUserStore()
 
-async function haddleSubmit(e) {
+async function haddleSubmit(e : Event) {
   try {
-    e.preventDefault()
     console.log("Email:", email.value)
     console.log("Password:", password.value)
 
@@ -33,16 +32,14 @@ async function haddleSubmit(e) {
         Authorization: `Bearer ${jwt}`
       },
       params: {
-        populate: 'role'
+        populate: 'role,image'
       }
     })
 
     const role = res.data.role.type
-    console.log(res.data)
-    console.log(role)
-    console.log(jwt)
+    const image = res.data?.image?.url
 
-    userStore.authenticaded(res.data, jwt)
+    userStore.authenticaded(res.data, jwt, image)
 
     if (role == 'admin') {
       router.push('/admin')
@@ -74,7 +71,7 @@ async function haddleSubmit(e) {
             </div>
           </div>
           <div class="col-12">
-            <form class="w-100" action="/login" method="POST" @submit="haddleSubmit">
+            <form class="w-100" action="/login" method="POST" @submit.prevent="haddleSubmit">
               <div class="form-group mb-3">
                 <PhEnvelope :size="20" class="me-2" />
                 <label for="email" class="pb-2">Email</label>

@@ -16,9 +16,14 @@ type Role = {
   name: string
 }
 
+type Image = {
+  url: string
+}
+
 export type User = {
   id: number,
   username: string,
   role: Role,
+  image: Image,
   email: string
 }

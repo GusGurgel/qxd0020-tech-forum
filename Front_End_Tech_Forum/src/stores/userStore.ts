@@ -10,18 +10,22 @@ export const useUserStore = defineStore('user', () => {
     email: localStorage.getItem('email') || "",
     role: {
       name: localStorage.getItem('role') || ""
+    },
+    image: {
+      url: localStorage.getItem('image') || ""
     }
   })
 
   const jwt = ref(localStorage.getItem("jwt") || "")
 
-  const role = computed(() => user.value.role.name)
+  const role = computed(() => user.value?.role?.name)
   const username = computed(() => user.value.username)
+  const id = computed(() => user.value.id)
   const email = computed(() => user.value.email)
+  const image = computed(() => user.value?.image?.url)
   const isAuthenticated = computed(() => jwt.value !== "")
-  
 
-  function authenticaded(authUser: User, token: string) {
+  function authenticaded(authUser: User, token: string, image?: string) {
     user.value = authUser
     jwt.value = token
 
@@ -30,6 +34,14 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('email', authUser.email)
     localStorage.setItem('role', authUser.role.name)
     localStorage.setItem('jwt', token)
+    if(image){
+      localStorage.setItem('image', image)
+    }
+  }
+
+  function changePerfilImageUrl(url : string) {
+    user.value.image.url = url
+    localStorage.setItem('image', url)
   }
 
   function logout() {
@@ -40,5 +52,5 @@ export const useUserStore = defineStore('user', () => {
   }
 
 
-  return { user, username, email, jwt, role, isAuthenticated, authenticaded, logout}
+  return { user, username, id, email, image, jwt, role, isAuthenticated, changePerfilImageUrl, authenticaded, logout}
 })

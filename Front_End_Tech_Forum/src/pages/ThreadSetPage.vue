@@ -36,7 +36,8 @@ onMounted(async () => {
             id: 1,
             username: "Gurgel Temporário",
             role: { name: "blabla" },
-            email: "bal@gmail.com"
+            email: "bal@gmail.com",
+            image: { url: "?"}
         }
       })
     }
