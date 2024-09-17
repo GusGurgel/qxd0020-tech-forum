@@ -1,0 +1,19 @@
+# Vars
+@baseURL = http://localhost:1337
+
+### findAll
+GET {{baseURL}}/api/thread-sets/4
+
+### store
+POST {{baseURL}}/api/thread-sets
+Content-Type: application/json
+
+{
+    "data": {
+        "name": "Python",
+        "description": "The shitest lang in the world"
+    }
+}
+
+### delete
+DELETE {{baseURL}}/api/thread-sets/2

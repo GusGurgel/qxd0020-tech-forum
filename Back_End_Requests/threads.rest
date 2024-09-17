@@ -1,0 +1,29 @@
+# Vars
+@baseURL = http://localhost:1337
+
+### findAll
+GET {{baseURL}}/api/threads
+
+### findAll com populate em ThreadSet
+GET {{baseURL}}/api/threads?populate=*
+
+### findAll para todas as Threads de um ThreadSetId=?
+@threadSetId=5
+GET {{baseURL}}/api/threads?filters[thread_set][id][$eq]={{threadSetId}}
+
+### store
+//cThreadSetId=4
+//pythonThreadSetId=5
+POST {{baseURL}}/api/threads
+Content-Type: application/json
+
+{
+    "data": {
+        "title": "If python then eu não",
+        "thread_set": 5,
+        "isFixed": false
+    }
+}
+
+### delete
+DELETE {{baseURL}}/api/threads
