@@ -29,7 +29,7 @@ function handleLogout() {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto nav-underline">
-                    <li class="nav-item">
+                    <li class="nav-item link">
                         <RouterLink class="lexend-font nav-link" to="/">
                             Home
                             <PhHouseSimple weight="fill" />
@@ -41,12 +41,20 @@ function handleLogout() {
                             <PhUser weight="fill" />
                         </RouterLink>
                     </li>
-                    <li v-else @click="handleLogout()" class="nav-item">
-                        <div class="lexend-font nav-link">
-                            Logout
-                            <PhSignOut />
-                        </div>
-                    </li>
+                    <template v-else>
+                        <li class="nav-item">
+                            <RouterLink to="/user/me" class="lexend-font nav-link">
+                                Perfil
+                                <PhUser weight="fill" />
+                            </RouterLink>
+                        </li>
+                        <li @click="userStore.logout()" class="nav-item">
+                            <RouterLink to="/login" class="lexend-font nav-link">
+                                Logout
+                                <PhSignOut />
+                            </RouterLink>
+                        </li>
+                    </template >
                 </ul>
             </div>
         </div>
