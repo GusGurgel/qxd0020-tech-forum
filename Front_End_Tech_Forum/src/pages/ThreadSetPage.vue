@@ -33,11 +33,11 @@ onMounted(async () => {
         isFixed: thread.attributes.isFixed,
         createdAt: new Date(thread.attributes.createdAt),
         author: {
-            id: 1,
-            username: "Gurgel Temporário",
-            role: { name: "blabla" },
-            email: "bal@gmail.com",
-            image: { url: "?"}
+          id: 1,
+          username: "Gurgel Temporário",
+          role: { name: "blabla" },
+          email: "bal@gmail.com",
+          image: { url: "?" }
         }
       })
     }
@@ -51,7 +51,10 @@ onMounted(async () => {
 
 <template>
   <main>
-     <div v-if="error" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
+    <div class="text-center text-white p-1 mt-2 bg-secondary font-monospace top-rounded">
+      {{  ThreadSetData.name }}
+    </div>
+    <div v-if="error" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
       <PhWarningOctagon :size="32" />
       <div class="ms-3">
         Error trying to fetch ThreadSet with <strong>id = {{ idThreadSet }}</strong>
@@ -70,5 +73,9 @@ onMounted(async () => {
 <style scoped>
 .vh-80 {
   height: 80vh;
+}
+
+.top-rounded {
+  border-radius: 10px 10px 0 0;
 }
 </style>

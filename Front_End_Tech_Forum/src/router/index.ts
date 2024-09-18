@@ -7,6 +7,7 @@ import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
 import { useUserStore } from '@/stores/userStore'
 import UserPage from '@/pages/UserPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
+import ThreadSetFrom from '@/components/admin/ThreadSetFrom.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,7 +36,14 @@ const router = createRouter({
       path: '/admin',
       component: AdminHomePage,
       meta: {
-        requiresAuth: true
+        requiresAdminAuth: true
+      }
+    },
+    {
+      path: '/form/threadset',
+      component: ThreadSetFrom,
+      meta: {
+        requiresAdminAuth: true
       }
     },
     {
@@ -56,5 +64,8 @@ router.beforeEach((to, from) => {
   const userStore = useUserStore()
   if(to.meta.requiresAuth && !userStore.isAuthenticated) {
     return '/login'
+  }
+  if(to.meta.requiresAdminAuth && (!userStore.isAuthenticated || userStore.role.toLocaleLowerCase() !== "admin")) {
+    return '/home'
   }
 })

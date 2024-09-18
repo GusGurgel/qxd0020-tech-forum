@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import type { ThreadSet } from "@/types/index.js"
 import { useRouter } from "vue-router";
+import { PhPencil } from "@phosphor-icons/vue";
 
-const props = defineProps<ThreadSet>()
+const props = defineProps<{ threadSet: ThreadSet, editButton: boolean}>()
 const router = useRouter()
 
 function goToThreadSetPage() {
-    router.push(`/threadset/${props.id}`)
+    router.push(`/threadset/${props.threadSet.id}`)
 }
 </script>
 
 <template>
-    <tr @click="goToThreadSetPage">
+    <tr @click="goToThreadSetPage" >
         <td class="w-50">
             <div>
                 <div class="text-primary h5">
-                    {{ name }}
+                    {{ threadSet.name }}
                 </div>
                 <div class="small">
-                    {{ description }}
+                    {{ threadSet.description }}
                 </div>
             </div>
         </td>
@@ -37,6 +38,11 @@ function goToThreadSetPage() {
             <div>
                 in: ?
             </div>
+        </td>
+        <td class="text-center">
+            <button @click.stop="router.push(`/form/threadset?edit=${threadSet.id}`)" class="btn btn-primary ">
+                <PhPencil />
+            </button>
         </td>
     </tr>
 </template>

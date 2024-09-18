@@ -33,6 +33,9 @@ onMounted(async () => {
 
 <template>
   <main>
+    <div class="text-center text-white p-1 mt-2 bg-secondary top-rounded font-monospace">
+        Thread Sets
+    </div>
     <div v-if="error" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
       <PhWarningOctagon :size="32" />
       <div class="ms-3">
@@ -44,7 +47,7 @@ onMounted(async () => {
         <span class="sr-only"></span>
       </div>
     </div>
-    <ThreadSetContainer :threadSets="ThreadSets" />
+    <ThreadSetContainer :threadSets="ThreadSets" :editButton="false" />
   </main>
 </template>
 
@@ -52,5 +55,9 @@ onMounted(async () => {
 <style scoped>
 .vh-80 {
   height: 80vh;
+}
+
+.top-rounded {
+  border-radius: 10px 10px 0 0;
 }
 </style>
