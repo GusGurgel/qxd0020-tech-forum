@@ -39,9 +39,14 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function changePerfilImageUrl(url : string) {
+  function changeImage(url : string) {
     user.value.image.url = url
     localStorage.setItem('image', url)
+  }
+  
+  function changeUsername(username : string) {
+    user.value.username = username
+    localStorage.setItem('username', username)
   }
 
   function logout() {
@@ -52,5 +57,18 @@ export const useUserStore = defineStore('user', () => {
   }
 
 
-  return { user, username, id, email, image, jwt, role, isAuthenticated, changePerfilImageUrl, authenticaded, logout}
+  return { 
+    user, 
+    username, 
+    id, 
+    email, 
+    image, 
+    jwt, 
+    role, 
+    isAuthenticated,  
+    changeImage, 
+    changeUsername,
+    authenticaded, 
+    logout
+  }
 })

@@ -27,3 +27,10 @@ export type User = {
   image: Image,
   email: string
 }
+
+export interface ApplicationError {
+  error: {
+    name: string,
+    message: string,
+  }
+}

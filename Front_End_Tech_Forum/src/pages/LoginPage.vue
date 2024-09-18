@@ -4,11 +4,14 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { api } from '@/api/'
 import { useUserStore } from '@/stores/userStore'
+import { isApplicationError } from '@/composables/useApplicationError';
+import type { ApplicationError } from '@/types';
+import { isAxiosError } from 'axios';
 
 const email = ref('')
 const password = ref('')
 const loading = ref(false)
-const error = ref<Error>()
+const exception = ref<ApplicationError>()
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -18,7 +21,7 @@ async function haddleSubmit(e : Event) {
     console.log("Password:", password.value)
 
     loading.value = true
-    error.value = undefined
+    exception.value = undefined
 
     const { data } = await api.post('/auth/local', {
       identifier: email.value,
@@ -47,18 +50,20 @@ async function haddleSubmit(e : Event) {
       router.push('/')
     }
   } catch (e) {
-    console.log(e)
-    error.value = e as Error
+    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+      exception.value = e.response?.data
+    }
   } finally {
     loading.value = false
   }
 }
-
-
 </script>
 
 <template>
-  <main class="mt-5">
+  <main :class="{ 'mt-5': !exception }">
+    <div v-if="exception" class="alert alert-danger mt-3" role="alert">
+      {{ exception.error.message }}
+    </div>
     <div class="row d-lg-flex justify-content-center">
       <div class="border rounded p-3 col-lg-3 bg-light shadow">
         <div class="row">
@@ -84,8 +89,6 @@ async function haddleSubmit(e : Event) {
                 <input type="password" name="password" v-model="password" class="form-control" id="password"
                   placeholder="Password" required>
               </div>
-              <small class="text-danger">
-              </small>
               <div class="text-center pt-4">
                 <button type="submit" class="btn btn-dark pe-4 ps-4">Enter</button>
               </div>
