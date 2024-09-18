@@ -7,8 +7,6 @@ import { useUserStore } from '@/stores/userStore'
 const router = useRouter()
 
 const userStore = useUserStore()
-console.log(userStore.username)
-console.log(userStore.isAuthenticated)
 
 function handleLogout() {
     userStore.logout()

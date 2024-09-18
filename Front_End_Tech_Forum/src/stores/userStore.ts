@@ -36,6 +36,8 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('jwt', token)
     if(image){
       localStorage.setItem('image', image)
+    } else {
+      user.value.image = { url: "" }
     }
   }
 

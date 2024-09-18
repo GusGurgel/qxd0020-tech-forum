@@ -6,6 +6,7 @@ import NotFoundPage from '@/pages/NotFoundPage.vue'
 import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
 import { useUserStore } from '@/stores/userStore'
 import UserPage from '@/pages/UserPage.vue'
+import RegisterPage from '@/pages/RegisterPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPage
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: RegisterPage
     },
     {
       path: '/threadset/:id',
