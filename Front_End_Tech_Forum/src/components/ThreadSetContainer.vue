@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ThreadSetEntry from './ThreadSetEntry.vue';
-import type { ThreadSet } from "@/types/index.js"
+import type { ThreadSet, Thread } from "@/types/index.js"
 import { useRouter } from 'vue-router';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
@@ -18,6 +18,12 @@ const loading = ref(true)
 const router = useRouter()
 const userStore = useUserStore()
 
+function handleError(e: any) {
+  if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+    exception.value = e.response?.data
+  }
+}
+
 async function handleRemove(idThreadSet: number, nameThreadSet: string) {
   try {
     exception.value = undefined
@@ -30,30 +36,28 @@ async function handleRemove(idThreadSet: number, nameThreadSet: string) {
 
     let messageComplemente = ""
 
-    if(childsThreadSets.length > 0) {
+    if (childsThreadSets.length > 0) {
       messageComplemente = `\n\nThis Thread Set has ${childsThreadSets.length} Threads that will be removed with this action.`
     }
 
-    if(confirm(`Confirm thead "${nameThreadSet}" deletion.` + messageComplemente)) {
-        for(const thread of childsThreadSets) {
-          await api.delete(`/threads/${thread.id}`, {
-              headers: {
-                  Authorization: `Bearer ${userStore.jwt}`
-              }
-          })
-        }
-
-        await api.delete(`/thread-sets/${idThreadSet}`, {
-            headers: {
-                Authorization: `Bearer ${userStore.jwt}`
-            }
+    if (confirm(`Confirm thead "${nameThreadSet}" deletion.` + messageComplemente)) {
+      for (const thread of childsThreadSets) {
+        await api.delete(`/threads/${thread.id}`, {
+          headers: {
+            Authorization: `Bearer ${userStore.jwt}`
+          }
         })
-        threadSets.value = threadSets.value.filter(val => val.id !== idThreadSet)
+      }
+
+      await api.delete(`/thread-sets/${idThreadSet}`, {
+        headers: {
+          Authorization: `Bearer ${userStore.jwt}`
+        }
+      })
+      threadSets.value = threadSets.value.filter(val => val.id !== idThreadSet)
     }
-  } catch(e) {
-    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-        exception.value = e.response?.data
-    }
+  } catch (e) {
+    handleError(e)
   } finally {
     loading.value = false
   }
@@ -63,21 +67,39 @@ onMounted(async () => {
   try {
     loading.value = true
     const { data } = await api.get("/thread-sets")
-    const threadData = data.data;
+    const threadSetsData = data.data;
 
-    for (const thread of threadData) {
+    for (const threadSetData of threadSetsData) {
+
+      // Pegar dados das threads contidas no threadset
+      const dataThreads = (await api.get('/threads', {
+        params: {
+          "filters[thread_set][id][$eq]": threadSetData.id,
+          "populate": "author"
+        }
+      })).data
+
+      // Pegar dados da última thread do threadset
+      const dataLastThread = (await api.get('/threads', {
+        params: {
+          "filters[thread_set][id][$eq]": threadSetData.id,
+          "populate": "author",
+          "sort": "createdAt:desc",
+          "pagination[limit]": 1 
+        }
+      })).data
+
+
       threadSets.value.push({
-        id: thread.id,
-        name: thread.attributes.name,
-        description: thread.attributes.description,
+        id: threadSetData.id,
+        name: threadSetData.attributes.name,
+        description: threadSetData.attributes.description,
+        threadCount: dataThreads.data.length,
+        lastThread: dataLastThread.data.length > 0 ? dataLastThread.data[0] : null
       })
     }
-
-    console.log(threadSets.value)
   } catch (e) {
-    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-      exception.value = e.response?.data
-    }
+    handleError(e)
   } finally {
     loading.value = false
   }
@@ -107,8 +129,8 @@ onMounted(async () => {
   <table class="table table-hover">
     <tbody>
       <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id"
-        :threadSet="{ id: threadSet.id, name: threadSet.name, description: threadSet.description }"
-        :editButton="props.editButtons" @handleRemove="handleRemove" />
+        :threadSet="{ ...threadSet }"
+        :editButtons="props.editButtons" @handleRemove="handleRemove" />
     </tbody>
   </table>
 </template>

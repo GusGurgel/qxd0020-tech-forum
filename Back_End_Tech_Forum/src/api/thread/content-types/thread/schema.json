@@ -25,6 +25,11 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::thread-set.thread-set"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

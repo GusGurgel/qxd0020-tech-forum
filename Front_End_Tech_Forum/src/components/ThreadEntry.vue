@@ -2,7 +2,6 @@
 import type { Thread } from "@/types/index.js"
 import { useRouter } from "vue-router";
 
-
 const router = useRouter()
 const props = defineProps<Thread>()
 

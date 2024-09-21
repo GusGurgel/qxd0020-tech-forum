@@ -3,13 +3,15 @@ export type Thread = {
   title: string
   isFixed: boolean
   createdAt: Date
-  author: User
+  author: Author
 }
 
 export type ThreadSet = {
   id: number
   name: string
   description: string
+  threadCount?: number
+  lastThread?: any
 }
 
 type Role = {
@@ -18,6 +20,10 @@ type Role = {
 
 type Image = {
   url: string
+}
+
+type Author = {
+  username: string
 }
 
 export type User = {

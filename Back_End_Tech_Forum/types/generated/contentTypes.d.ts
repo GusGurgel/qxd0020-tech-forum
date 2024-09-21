@@ -385,6 +385,11 @@ export interface ApiThreadThread extends Schema.CollectionType {
       'oneToOne',
       'api::thread-set.thread-set'
     >;
+    author: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

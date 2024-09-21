@@ -2,11 +2,10 @@
 import ThreadContainer from '@/components/ThreadContainer.vue';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
-import type { Thread, ThreadSet } from '@/types';
+import type { ThreadSet } from '@/types';
 import { useRoute } from 'vue-router';
 import { PhWarningOctagon } from '@phosphor-icons/vue';
 
-const Threads = ref([] as Thread[])
 const ThreadSetData = ref({} as ThreadSet)
 const error = ref<Error>()
 const loading = ref(true)
@@ -16,34 +15,12 @@ const idThreadSet = Number(route.params.id)
 onMounted(async () => {
   try {
     const dataThreadSet = (await api.get(`/thread-sets/${idThreadSet}`)).data
-    const dataThread = (await api.get('/threads', {
-      params: {
-        "filters[thread_set][id][$eq]": idThreadSet
-      }
-    })).data
 
     const threadSetData = dataThreadSet.data;
-    const threadsData = dataThread.data;
     ThreadSetData.value = {
       id: threadSetData.id,
       name: threadSetData.attributes.name,
       description: threadSetData.attributes.description
-    }
-
-    for (const thread of threadsData) {
-      Threads.value.push({
-        id: thread.id,
-        title: thread.attributes.title,
-        isFixed: thread.attributes.isFixed,
-        createdAt: new Date(thread.attributes.createdAt),
-        author: {
-          id: 1,
-          username: "Gurgel Temporário",
-          role: { name: "blabla" },
-          email: "bal@gmail.com",
-          image: { url: "?" }
-        }
-      })
     }
   } catch (e) {
     console.log(e)
@@ -70,7 +47,7 @@ onMounted(async () => {
         <span class="sr-only"></span>
       </div>
     </div>
-    <ThreadContainer :threads="Threads" />
+    <ThreadContainer :idThreadSet="idThreadSet" />
   </main>
 </template>
 
