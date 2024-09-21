@@ -58,7 +58,7 @@ async function handleCreate(e: Event) {
             </div>
         </div>
         <form v-else @submit="handleCreate" class="pt-3">
-            <div class="bg-secondary text-light p-3 text-center rounded">
+            <div class="bg-dark text-light p-3 text-center rounded">
                 <h4 class="m-0 p-0">
                     <div class="d-flex align-items-center justify-content-center">
                         Create - Thread Set

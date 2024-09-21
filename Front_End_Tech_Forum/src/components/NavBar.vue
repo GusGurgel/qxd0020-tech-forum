@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { PhUser, PhHouseSimple, PhSignOut, PhCrown } from '@phosphor-icons/vue';
+import { PhUser, PhHouseSimple, PhSignOut } from '@phosphor-icons/vue';
 import { useUserStore } from '@/stores/userStore'
 import { computed } from 'vue';
 
@@ -15,11 +15,6 @@ const homeRoute = computed(() => {
         return "/"
     }
 })
-
-function handleLogout() {
-    userStore.logout()
-    router.push("/")
-}
 </script>
 
 <template>

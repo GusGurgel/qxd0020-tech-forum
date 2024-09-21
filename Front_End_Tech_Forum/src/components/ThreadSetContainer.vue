@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import ThreadSetEntry from './ThreadSetEntry.vue';
-import type { ThreadSet, Thread } from "@/types/index.js"
+import type { ThreadSet } from "@/types/index.js"
 import { useRouter } from 'vue-router';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
-import { PhWarningOctagon, PhPlusCircle } from '@phosphor-icons/vue';
+import { PhWarningOctagon, PhPlus } from '@phosphor-icons/vue';
 import { isAxiosError } from 'axios';
 import { isApplicationError } from '@/composables/useApplicationError';
 import type { ApplicationError } from '@/types';
@@ -108,13 +108,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <button v-if="editButtons" @click="router.push('/create/threadset')"
-    class="btn btn-outline-primary mb-2 w-100 text-center">
-    <PhPlusCircle />
-  </button>
-  <div class="text-center text-white p-1 bg-secondary top-rounded font-monospace">
-    Thread Sets
-  </div>
   <div v-if="exception" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
     <PhWarningOctagon :size="32" />
     <div class="ms-3">
@@ -126,18 +119,37 @@ onMounted(async () => {
       <span class="sr-only"></span>
     </div>
   </div>
-  <table class="table table-hover">
-    <tbody>
-      <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id"
-        :threadSet="{ ...threadSet }"
-        :editButtons="props.editButtons" @handleRemove="handleRemove" />
-    </tbody>
-  </table>
+  <main class="bg-light-subtle shadow row top-rounded mt-3">
+    <div class="shadow col-12 col-lg-4 bg-dark text-light top-left-rounded p-2 text-center">
+      Name
+    </div>
+    <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-2 text-center">
+      Threads Created
+    </div>
+    <div class="shadow d-none d-lg-block bg-dark text-light p-2 text-center" :class="{ 'col-5': editButtons, 'col-6': !editButtons }">
+      Last Thread
+    </div>
+    <button v-if="editButtons" @click="router.push('/create/threadset')"
+      class="btn btn-dark rounded-0 top-right-rounded text-center col-1 shadow">
+      <PhPlus :size="20" />
+    </button>
+    <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id"
+      :threadSet="{ ...threadSet }"
+      :editButtons="props.editButtons" @handleRemove="handleRemove" />
+  </main>
 </template>
 
 <style scoped>
 .vh-80 {
   height: 80vh;
+}
+
+.top-left-rounded {
+  border-top-left-radius: 10px;
+}
+
+.top-right-rounded {
+  border-top-right-radius: 10px !important;
 }
 
 .top-rounded {

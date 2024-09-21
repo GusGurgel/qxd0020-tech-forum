@@ -1,3 +1,11 @@
 .lexend-font {
+  font-family: 'Lexend Deca';
+}
+
+.ubuntu-font {
+  font-family: 'Ubuntu';
+}
+
+* {
   font-family: 'Lexend Deca', sans-serif;
 }

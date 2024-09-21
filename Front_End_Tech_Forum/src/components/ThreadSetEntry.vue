@@ -15,7 +15,7 @@ const lastThreadTitle = ref<string>("")
 const lastThreadAuthor = ref<string>("")
 const lastThreadCreateAt = ref<string>("")
 
-if(props.threadSet.lastThread) {
+if (props.threadSet.lastThread) {
   const { lastThread } = props.threadSet
   console.log(lastThread)
 
@@ -24,49 +24,50 @@ if(props.threadSet.lastThread) {
   lastThreadCreateAt.value = new Date(lastThread.attributes.createdAt).toLocaleDateString("en-US")
 }
 
-function goToThreadSetPage() {
-  router.push(`/threadset/${props.threadSet.id}`)
-}
-
 </script>
 
 <template>
-  <tr @click="goToThreadSetPage">
-    <td>
-      <div>
-        <div class="text-primary h5">
-          {{ threadSet.name }}
-        </div>
-        <div class="small">
-          {{ threadSet.description }}
-        </div>
+  <article @click="router.push(`/threadset/${threadSet.id}`)" class="row border-bottom gray-hover m-0 p-0">
+    <div class="col-12 p-3" :class="{ 'col-lg-6': !editButtons, 'col-lg-4': editButtons }">
+      <div class="text-primary h5">
+        {{ threadSet.name }}
       </div>
-    </td>
-    <td>
-      <div>
-        {{ threadSet.threadCount }} Threads
+      <div class="small">
+        {{ threadSet.description }}
       </div>
-    </td>
-    <td>
+    </div>
+    <div class="col-12 col-lg-2 p-3 text-center">
+      {{ threadSet.threadCount }} Threads
+    </div>
+    <div class="col-12 col-lg-5 p-3">
       <div v-if="lastThreadTitle !== ''">
         <div>
-          Title: <strong>{{ lastThreadTitle }}</strong>
+          Title: <strong class="ubuntu-font">{{ lastThreadTitle }}</strong>
         </div>
         <div>
-          Author: <strong>{{ lastThreadAuthor }}</strong>
+          Author: <strong class="ubuntu-font">{{ lastThreadAuthor }}</strong>
         </div>
         <div>
-          Date: <strong>{{ lastThreadCreateAt }}</strong>
+          Date: <strong class="font-ubunut">{{ lastThreadCreateAt }}</strong>
         </div>
       </div>
-    </td>
-    <td v-if="editButtons" class="text-center">
-      <button @click.stop="router.push(`/edit/threadset/${threadSet.id}`)" class="btn btn-primary ">
+      <div v-else>
+        <strong class="ubuntu-font">No threads 😭</strong> 
+      </div>
+    </div>
+    <div v-if="editButtons" class="text-center col-lg-1 d-flex align-items-center justify-content-center d-flex flex-column p-1">
+      <button @click.stop="router.push(`/edit/threadset/${threadSet.id}`)" class="btn btn-primary mb-2">
         <PhPencil />
       </button>
-      <button @click.stop="$emit('handleRemove', threadSet.id, threadSet.name)" class="ms-2 btn btn-danger">
+      <button @click.stop="$emit('handleRemove', threadSet.id, threadSet.name)" class="btn btn-danger">
         <PhTrash />
       </button>
-    </td>
-  </tr>
+    </div>
+  </article>
 </template>
+
+<style scoped>
+.gray-hover:hover {
+  background-color: #f0f0f0;
+}
+</style>

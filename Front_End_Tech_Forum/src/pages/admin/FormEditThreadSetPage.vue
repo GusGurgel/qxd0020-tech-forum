@@ -81,7 +81,7 @@ async function handleUpdate(e : Event) {
 </script>
 
 <template>
-    <main>
+    <main class="row">
         <div v-if="exception" class="alert alert-danger mt-3" role="alert">
             {{ exception.error.message }}
         </div>
@@ -90,8 +90,8 @@ async function handleUpdate(e : Event) {
                 <span class="sr-only"></span>
             </div>
         </div>
-        <form v-else @submit="handleUpdate" class="pt-3">
-            <div class="bg-secondary text-light p-3 text-center rounded">
+        <form v-else @submit="handleUpdate" class="pt-3 col-6">
+            <div class="bg-dark text-light p-3 text-center rounded">
                 <h4 class="m-0 p-0">
                     <div class="d-flex align-items-center justify-content-center">
                         Edit - Thread Set

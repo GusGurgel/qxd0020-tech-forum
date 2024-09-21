@@ -6,6 +6,7 @@ import router from './router'
 import 'bootstrap/dist/js/bootstrap.min.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@fontsource/lexend-deca'
+import '@fontsource/ubuntu'
 import './assets/main.css'
 
 const app = createApp(App)
