@@ -7,7 +7,8 @@ import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
 import { useUserStore } from '@/stores/userStore'
 import UserPage from '@/pages/UserPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
-import ThreadSetFrom from '@/components/admin/ThreadSetFrom.vue'
+import FormEditThreadSetPage from '@/pages/admin/FormEditThreadSetPage.vue'
+import FormCreateThreadSetPage from '@/pages/admin/FormCreateThreadSetPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,8 +41,15 @@ const router = createRouter({
       }
     },
     {
-      path: '/form/threadset',
-      component: ThreadSetFrom,
+      path: '/edit/threadset/:id',
+      component: FormEditThreadSetPage,
+      meta: {
+        requiresAdminAuth: true
+      }
+    },
+    {
+      path: '/create/threadset/',
+      component: FormCreateThreadSetPage,
       meta: {
         requiresAdminAuth: true
       }
@@ -59,13 +67,15 @@ const router = createRouter({
 
 export default router
 
-
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const userStore = useUserStore()
-  if(to.meta.requiresAuth && !userStore.isAuthenticated) {
+  if (to.meta.requiresAuth && !userStore.isAuthenticated) {
     return '/login'
   }
-  if(to.meta.requiresAdminAuth && (!userStore.isAuthenticated || userStore.role.toLocaleLowerCase() !== "admin")) {
-    return '/home'
+  if (
+    to.meta.requiresAdminAuth &&
+    (!userStore.isAuthenticated || userStore.role.toLocaleLowerCase() !== 'admin')
+  ) {
+    return '/'
   }
 })

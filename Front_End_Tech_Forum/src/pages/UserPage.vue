@@ -111,7 +111,6 @@ async function handleUserPerfilUpdate() {
         loading.value = false
     }
 }
-
 </script>
 
 <template>
@@ -131,7 +130,7 @@ async function handleUserPerfilUpdate() {
             <div>
                 <div id="username" class="text-center mt-4 h3 text-break">
                     <div v-if="userStore.role.toLocaleLowerCase() === 'admin'"
-                        class="display-6 border-bottom pb-3 mb-3">
+                        class="display-6 border-bottom pb-3 mb-3 text-warning">
                         Administrator
                         <PhCrown />
                     </div>

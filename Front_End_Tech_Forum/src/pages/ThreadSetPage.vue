@@ -16,7 +16,11 @@ const idThreadSet = Number(route.params.id)
 onMounted(async () => {
   try {
     const dataThreadSet = (await api.get(`/thread-sets/${idThreadSet}`)).data
-    const dataThread = (await api.get(`/threads?filters[thread_set][id][$eq]=${idThreadSet}`)).data
+    const dataThread = (await api.get('/threads', {
+      params: {
+        "filters[thread_set][id][$eq]": idThreadSet
+      }
+    })).data
 
     const threadSetData = dataThreadSet.data;
     const threadsData = dataThread.data;
@@ -42,6 +46,7 @@ onMounted(async () => {
       })
     }
   } catch (e) {
+    console.log(e)
     error.value = e as Error
   } finally {
     loading.value = false

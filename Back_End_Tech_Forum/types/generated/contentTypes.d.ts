@@ -374,8 +374,12 @@ export interface ApiThreadThread extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    title: Attribute.String;
-    isFixed: Attribute.Boolean;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    isFixed: Attribute.Boolean & Attribute.DefaultTo<false>;
     thread_set: Attribute.Relation<
       'api::thread.thread',
       'oneToOne',
@@ -411,8 +415,14 @@ export interface ApiThreadSetThreadSet extends Schema.CollectionType {
     draftAndPublish: true;
   };
   attributes: {
-    name: Attribute.String;
-    description: Attribute.String;
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+        maxLength: 100;
+      }>;
+    description: Attribute.Text & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
