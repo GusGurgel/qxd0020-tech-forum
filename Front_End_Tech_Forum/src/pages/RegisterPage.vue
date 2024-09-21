@@ -3,7 +3,6 @@ import { PhUserCirclePlus, PhEnvelope, PhKey, PhIdentificationCard } from '@phos
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { api } from '@/api/'
-import { useUserStore } from '@/stores/userStore'
 import { isApplicationError } from '@/composables/useApplicationError';
 import type { ApplicationError } from '@/types';
 import { isAxiosError } from 'axios';
@@ -14,9 +13,8 @@ const username = ref('')
 const loading = ref(false)
 const exception = ref<ApplicationError>()
 const router = useRouter()
-const userStore = useUserStore()
 
-async function haddleSubmit(e: Event) {
+async function haddleSubmit() {
   try {
     loading.value = true
     exception.value = undefined

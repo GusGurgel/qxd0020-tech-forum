@@ -15,7 +15,7 @@ const exception = ref<ApplicationError>()
 const router = useRouter()
 const userStore = useUserStore()
 
-async function haddleSubmit(e : Event) {
+async function haddleSubmit() {
   try {
     console.log("Email:", email.value)
     console.log("Password:", password.value)

@@ -14,7 +14,6 @@ const exception = ref<ApplicationError>()
 const usernameUpdate = ref(userStore.username)
 const inputEnter = computed(() => perfilImageUpdate.value !== undefined || usernameUpdate.value !== userStore.username)
 const loading = ref(false)
-const inputImage = document.getElementById("input-perfil-img")
 
 const userImage = computed(() => {
     if (userStore.image) {
