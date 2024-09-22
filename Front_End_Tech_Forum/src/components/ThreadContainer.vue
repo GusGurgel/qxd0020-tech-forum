@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ThreadSet, ApplicationError, Thread } from "@/types/index.js"
+import type { ThreadSet, ApplicationError, Thread, Response } from "@/types/index.js"
 
 import BootstrapModal from '@/components/BootstrapModal.vue';
 import ThreadEntry from './ThreadEntry.vue'
@@ -105,33 +105,39 @@ onMounted(async () => {
     }
 
     for (const threadData of threadsData) {
+      // Pegar dados das reponses contidas na thread
+      const { data: reponsesData } = (await api.get('/responses', {
+        params: {
+          "filters[thread][id][$eq]": threadData.id,
+        }
+      })).data
 
-      // ---------- Pegar dados das reposta mais tarde -------------
-      // Pegar dados das threads contidas no threadset
-      // const dataThreads = (await api.get('/threads', {
-      //   params: {
-      //     "filters[thread_set][id][$eq]": threadSetData.id,
-      //     "populate": "author"
-      //   }
-      // })).data
+      // Pegar dados da última thread do threadset
+      const { data: lastResponseData } = (await api.get('/responses', {
+        params: {
+          "filters[thread][id][$eq]": threadData.id,
+          "populate": "author",
+          "sort": "createdAt:desc",
+          "pagination[limit]": 1
+        }
+      })).data
 
-      // // Pegar dados da última thread do threadset
-      // const dataLastThread = (await api.get('/threads', {
-      //   params: {
-      //     "filters[thread_set][id][$eq]": threadSetData.id,
-      //     "populate": "author",
-      //     "sort": "createdAt:desc",
-      //     "pagination[limit]": 1
-      //   }
-      // })).data
+      let lastResponse : Response | null = null
+
+      if(lastResponseData.length > 0) {
+        lastResponseData[0].createdAt = new Date(lastResponseData[0].createdAt)
+        lastResponse = lastResponseData[0]
+      }
 
       threads.value.push({
         id: threadData.id,
         title: threadData.title,
         createdAt: new Date(threadData.createdAt),
         isFixed: threadData.isFixed,
+        reponsesCount: reponsesData.length,
+        lastResponse,
         author: {
-          username: threadData.author.name
+          username: threadData.author.username
         }
       })
     }
@@ -166,7 +172,7 @@ onMounted(async () => {
   <div v-if="exception" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
     <PhWarningOctagon :size="32" />
     <div class="ms-3">
-      Error trying to fetch <strong>Threads Set</strong>
+      Error trying to fetch <strong>Threads</strong>
     </div>
   </div>
   <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">
@@ -180,19 +186,18 @@ onMounted(async () => {
   <main class="bg-light-subtle shadow row m-0 mt-3">
     <div class="shadow col-10 bg-dark text-light p-0 py-2 text-center"
       :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
-      Name
+      Title
     </div>
     <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-0 py-2 text-center">
-      Threads Created
+      Thread Responses
     </div>
     <div class="shadow d-none d-lg-block bg-dark text-light p-0 py-2 text-center col-lg-5">
-      Last Thread
+      Last Response
     </div>
     <button v-if="editButtons" @click="router.push('/create/threadset')"
       class="btn btn-dark rounded-0 text-center col-2 col-lg-1 shadow">
       <PhPlus :size="20" />
     </button>
-    <!-- <ThreadEntry v-for="thread in Threads" :key="thread.id" :id="thread.id" :title="thread.title"
-      :author="thread.author" :isFixed="thread.isFixed" :createdAt="thread.createdAt" /> -->
+    <ThreadEntry v-for="thread in threads" :key="thread.id" :thread="{...thread}" :editButtons="props.editButtons" />
   </main>
 </template>

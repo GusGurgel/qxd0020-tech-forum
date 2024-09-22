@@ -18,7 +18,6 @@ const stringLimit = 35
 
 if (props.threadSet.lastThread) {
   const { lastThread } = props.threadSet
-  console.log(lastThread)
 
   lastThreadTitle.value = limitString(lastThread.title, stringLimit)
   lastThreadAuthor.value = limitString(lastThread.author.username, stringLimit)

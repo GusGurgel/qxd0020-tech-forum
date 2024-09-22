@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ThreadSetEntry from './ThreadSetEntry.vue';
-import type { ThreadSet } from "@/types/index.js"
+import type { ThreadSet, Thread } from "@/types/index.js"
 import { useRouter } from 'vue-router';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
@@ -95,12 +95,11 @@ onMounted(async () => {
       const { data: threads } = (await api.get('/threads', {
         params: {
           "filters[thread_set][id][$eq]": threadSet.id,
-          "populate": "author"
         }
       })).data
 
       // Pegar dados da última thread do threadset
-      const { data: lastThread } = (await api.get('/threads', {
+      const { data: lastThreadData } = (await api.get('/threads', {
         params: {
           "filters[thread_set][id][$eq]": threadSet.id,
           "populate": "author",
@@ -109,12 +108,17 @@ onMounted(async () => {
         }
       })).data
 
+      let lastThread : Thread | null = null
+
+      if(lastThreadData.length > 0) {
+        lastThreadData[0].createdAt = new Date(lastThreadData[0].createdAt)
+        lastThread = lastThreadData[0]
+      }
+
       threadSets.value.push({
-        id: threadSet.id,
-        name: threadSet.name,
-        description: threadSet.description,
+        ...threadSet,
         threadCount: threads.length,
-        lastThread: lastThread.length > 0 ? lastThread[0] : null
+        lastThread
       })
     }
   } catch (e) {

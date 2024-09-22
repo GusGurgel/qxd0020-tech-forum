@@ -362,6 +362,51 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiResponseResponse extends Schema.CollectionType {
+  collectionName: 'responses';
+  info: {
+    singularName: 'response';
+    pluralName: 'responses';
+    displayName: 'Response';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Attribute.RichText &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    author: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    thread: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'api::thread.thread'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiThreadThread extends Schema.CollectionType {
   collectionName: 'threads';
   info: {
@@ -882,6 +927,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::response.response': ApiResponseResponse;
       'api::thread.thread': ApiThreadThread;
       'api::thread-set.thread-set': ApiThreadSetThreadSet;
       'plugin::upload.file': PluginUploadFile;

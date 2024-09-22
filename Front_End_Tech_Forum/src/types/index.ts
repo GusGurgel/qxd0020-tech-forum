@@ -4,6 +4,8 @@ export type Thread = {
   isFixed: boolean
   createdAt: Date
   author: Author
+  reponsesCount?: number
+  lastResponse?: any
 }
 
 export type ThreadSet = {
@@ -12,6 +14,12 @@ export type ThreadSet = {
   description: string
   threadCount?: number
   lastThread?: any
+}
+
+export type Response = {
+  id: number
+  content: string
+  author: Author
 }
 
 type Role = {
