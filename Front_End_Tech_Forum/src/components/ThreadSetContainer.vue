@@ -28,6 +28,8 @@ const userStore = useUserStore()
 function handleError(e: any) {
   if (isAxiosError(e) && isApplicationError(e.response?.data)) {
     exception.value = e.response?.data
+  } else {
+    console.log(e)
   }
 }
 
@@ -36,7 +38,7 @@ async function removeThreadSet() {
       params: {
         "filters[thread_set][id][$eq]": toRemoveIdThreadSet.value
       }
-    })).data
+    }))
 
     for (const thread of childsThreadSets) {
       await api.delete(`/threads/${thread.id}`, {
@@ -85,36 +87,34 @@ async function handleRemove(idThreadSet: number, nameThreadSet: string) {
 onMounted(async () => {
   try {
     loading.value = true
-    const { data } = await api.get("/thread-sets")
-    const threadSetsData = data.data;
+    const { data: threadSetsData } = (await api.get("/thread-sets")).data
 
-    for (const threadSetData of threadSetsData) {
+    for (const threadSet of threadSetsData) {
 
       // Pegar dados das threads contidas no threadset
-      const dataThreads = (await api.get('/threads', {
+      const { data: threads } = (await api.get('/threads', {
         params: {
-          "filters[thread_set][id][$eq]": threadSetData.id,
+          "filters[thread_set][id][$eq]": threadSet.id,
           "populate": "author"
         }
       })).data
 
       // Pegar dados da última thread do threadset
-      const dataLastThread = (await api.get('/threads', {
+      const { data: lastThread } = (await api.get('/threads', {
         params: {
-          "filters[thread_set][id][$eq]": threadSetData.id,
+          "filters[thread_set][id][$eq]": threadSet.id,
           "populate": "author",
           "sort": "createdAt:desc",
           "pagination[limit]": 1
         }
       })).data
 
-
       threadSets.value.push({
-        id: threadSetData.id,
-        name: threadSetData.attributes.name,
-        description: threadSetData.attributes.description,
-        threadCount: dataThreads.data.length,
-        lastThread: dataLastThread.data.length > 0 ? dataLastThread.data[0] : null
+        id: threadSet.id,
+        name: threadSet.name,
+        description: threadSet.description,
+        threadCount: threads.length,
+        lastThread: lastThread.length > 0 ? lastThread[0] : null
       })
     }
   } catch (e) {
@@ -154,7 +154,7 @@ onMounted(async () => {
       <span class="sr-only"></span>
     </div>
   </div>
-  <main class="bg-light-subtle shadow row m-0 mt-3">
+  <main v-else class="bg-light-subtle shadow row m-0 mt-3">
     <div class="shadow col-10 bg-dark text-light p-0 py-2 text-center"
       :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
       Name

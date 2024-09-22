@@ -91,8 +91,8 @@ function handleError(e: any) {
 onMounted(async () => {
   try {
     loading.value = true
-    const threadSetData = (await api.get(`/thread-sets/${idThreadSet}`)).data
-    const threadsData = (await api.get(`/threads/`, {
+    const { data: threadSetData } = (await api.get(`/thread-sets/${idThreadSet}`)).data
+    const { data: threadsData } = (await api.get(`/threads/`, {
       params: {
         "filters[thread_set][id][$eq]": idThreadSet,
         "populate": "author",
@@ -100,16 +100,11 @@ onMounted(async () => {
       }
     })).data
 
-    const dataThreadSet = threadSetData.data;
-    const dataThreads = threadsData.data
-
     threadSet.value = {
-      name: dataThreadSet.attributes.name
+      name: threadSetData.name
     }
 
-    console.log(dataThreads)
-
-    for (const threadData of dataThreadSet) {
+    for (const threadData of threadsData) {
 
       // ---------- Pegar dados das reposta mais tarde -------------
       // Pegar dados das threads contidas no threadset
@@ -131,12 +126,12 @@ onMounted(async () => {
       // })).data
 
       threads.value.push({
-        id: parseInt(threadData.id),
-        title: String(threadData.attributes.title),
-        createdAt: new Date(threadData.attributes.createdAt),
-        isFixed: Boolean(threadData.isFixed),
+        id: threadData.id,
+        title: threadData.title,
+        createdAt: new Date(threadData.createdAt),
+        isFixed: threadData.isFixed,
         author: {
-          username: threadData.attributes.author.data.attributes.name
+          username: threadData.author.name
         }
       })
     }

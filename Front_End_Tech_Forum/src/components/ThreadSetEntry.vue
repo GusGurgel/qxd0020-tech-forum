@@ -20,9 +20,9 @@ if (props.threadSet.lastThread) {
   const { lastThread } = props.threadSet
   console.log(lastThread)
 
-  lastThreadTitle.value = limitString(lastThread.attributes.title, stringLimit)
-  lastThreadAuthor.value = limitString(lastThread.attributes.author.data.attributes.username, stringLimit)
-  lastThreadCreateAt.value = new Date(lastThread.attributes.createdAt).toLocaleDateString("en-US")
+  lastThreadTitle.value = limitString(lastThread.title, stringLimit)
+  lastThreadAuthor.value = limitString(lastThread.author.username, stringLimit)
+  lastThreadCreateAt.value = new Date(lastThread.createdAt).toLocaleDateString("en-US")
 }
 
 </script>

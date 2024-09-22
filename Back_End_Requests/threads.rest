@@ -2,7 +2,7 @@
 @baseURL = http://localhost:1337
 
 ### findAll
-GET {{baseURL}}/api/threads
+GET {{baseURL}}/api/threads/8
 
 ### findAll com populate em ThreadSet
 GET {{baseURL}}/api/threads?populate=*

@@ -24,20 +24,18 @@ const inputEnter = computed<boolean>(() => (name.value !== oldName.value) || (de
 onMounted(async () => {
   loading.value = true
 
-  const { data } = await api.get(`/thread-sets/${threadSetId.value}`, {
+  const { data: threadSetData } = (await api.get(`/thread-sets/${threadSetId.value}`, {
     headers: {
       Authorization: `Bearer ${userStore.jwt}`
     }
-  })
+  })).data
 
   loading.value = false
 
-  const threadSetData = data.data
-
-  name.value = threadSetData.attributes.name
-  oldName.value = threadSetData.attributes.name
-  description.value = threadSetData.attributes.description
-  odlDescription.value = threadSetData.attributes.description
+  name.value = threadSetData.name
+  oldName.value = threadSetData.name
+  description.value = threadSetData.description
+  odlDescription.value = threadSetData.description
 })
 
 async function handleUpdate(e: Event) {
