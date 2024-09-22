@@ -20,6 +20,7 @@ export type Response = {
   id: number
   content: string
   author: Author
+  createdAt: Date
 }
 
 type Role = {
@@ -32,6 +33,7 @@ type Image = {
 
 type Author = {
   username: string
+  image?: string
 }
 
 export type User = {

@@ -39,9 +39,9 @@ if (props.thread.lastResponse) {
 <template>
   <article @click="router.push(threadRoute)" class="row border-bottom gray-hover m-0 p-0">
     <div class="col-10 py-3 col-lg-5">
-      <div class="text-primary h5">
+      <div class="text-primary text-break h5">
         <PhPushPin v-if="thread.isFixed" class="me-1 text-warning" :size="20" />
-        {{ thread.title }}
+        {{  thread.title }}
       </div>
       <div class="small">
         Create by <strong class="ubuntu-font">{{ thread.author.username }}</strong>

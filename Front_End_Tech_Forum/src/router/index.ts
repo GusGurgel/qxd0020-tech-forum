@@ -2,16 +2,18 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import PublicHomePage from '@/pages/PublicHomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
-import PublicThreadsPage from '@/pages/PublicThreadsPage.vue'
+import PublicThreadSetPage from '@/pages/PublicThreadSetPage.vue'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
 import UserPage from '@/pages/UserPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
 import FormEditThreadSetPage from '@/pages/admin/FormEditThreadSetPage.vue'
 import FormCreateThreadSetPage from '@/pages/admin/FormCreateThreadSetPage.vue'
-import AdminThreadsPage from '@/pages/admin/AdminThreadsPage.vue'
+import AdminThreadSetPage from '@/pages/admin/AdminThreadSetPage.vue'
 import FormEditThreadPage from '@/pages/admin/FormEditThreadPage.vue'
 import FormCreateThreadPage from '@/pages/admin/FormCreateThreadPage.vue'
+import PublicThreadPage from '@/pages/PublicThreadPage.vue'
+import AdminThreadPage from '@/pages/admin/AdminThreadPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,12 +36,12 @@ const router = createRouter({
     {
       path: '/threadset/:id',
       name: 'threadset',
-      component: PublicThreadsPage
+      component: PublicThreadSetPage
     },
     {
       path: '/admin/threadset/:id',
       name: 'admin-threadset',
-      component: AdminThreadsPage,
+      component: AdminThreadSetPage,
       meta: {
         requiresAdminAuth: true
       }
@@ -63,6 +65,27 @@ const router = createRouter({
       component: FormCreateThreadSetPage,
       meta: {
         requiresAdminAuth: true
+      }
+    },
+    {
+      path: '/thread/:id',
+      component: PublicThreadPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/admin/thread/:id',
+      component: AdminThreadPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/create/thread/',
+      component: FormCreateThreadPage,
+      meta: {
+        requiresAuth: true
       }
     },
     {
