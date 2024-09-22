@@ -33,14 +33,14 @@ const userImage = computed(() => {
       <div class="small text-center bg-secondary text-light">
       </div>
       <div class="d-flex align-items-center justify-content-center p-2">
-        <img class="d-block img-size border border-5 rounded" :src="userImage" alt='user image'>
+        <img class="d-block img-size rounded" :src="userImage" alt='user image'>
       </div>
       <div class="text-center">
         <div>
           {{ response.author.username }}
         </div>
         <div class="small-text">
-          <strong class="ubuntu-font">{{ formatDate(response.createdAt) }}</strong>
+          In <strong class="ubuntu-font">{{ formatDate(response.createdAt) }}</strong>
         </div>
       </div>
     </div>

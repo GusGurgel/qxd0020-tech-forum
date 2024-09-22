@@ -68,7 +68,7 @@ onMounted(async () => {
       params: {
         "filters[thread][id][$eq]": idThread,
         "populate": "author.image",
-        "sort": ["createdAt:desc"]
+        "sort": ["createdAt:asc"]
       }
     })).data
 
@@ -127,12 +127,13 @@ onMounted(async () => {
   </div>
   <main v-else class="bg-light-subtle shadow row m-0 mt-3">
     <div
-      class="text-center overflow-hidden p-0 col-10 col-lg-10 bg-dark d-flex align-items-center justify-content-center text-light shadow">
+      class="text-center overflow-hidden p-2 col-10 bg-dark d-flex align-items-center justify-content-center text-light shadow"
+      :class="userStore.isAuthenticated ? 'col-lg-10' : 'col-lg-12'">
       <div>
         {{ thread.title }}
       </div>
     </div>
-    <button v-if="userStore.isAuthenticated" @click="router.push(`/create/thread?threadSet=${idThread}`)"
+    <button v-if="userStore.isAuthenticated" @click="router.push(`/create/response/${idThread}`)"
       class="btn btn-dark rounded-0 text-center col-2 col-lg-2 shadow">
       <span class="d-none d-lg-inline me-2">New Response</span>
       <PhPlus :size="20" />

@@ -14,6 +14,7 @@ import FormEditThreadPage from '@/pages/admin/FormEditThreadPage.vue'
 import FormCreateThreadPage from '@/pages/admin/FormCreateThreadPage.vue'
 import PublicThreadPage from '@/pages/PublicThreadPage.vue'
 import AdminThreadPage from '@/pages/admin/AdminThreadPage.vue'
+import FormCreateResponsePage from '@/pages/FormCreateResponsePage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,9 +71,6 @@ const router = createRouter({
     {
       path: '/thread/:id',
       component: PublicThreadPage,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: '/admin/thread/:id',
@@ -98,6 +96,13 @@ const router = createRouter({
     {
       path: '/create/thread/',
       component: FormCreateThreadPage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/create/response/:id',
+      component: FormCreateResponsePage,
       meta: {
         requiresAuth: true
       }

@@ -10,6 +10,14 @@
   height: 80vh;
 }
 
+.vh-50 {
+  height: 50vh;
+}
+
+.h-90 {
+  height: 90%;
+}
+
 .top-left-rounded {
   border-top-left-radius: 10px;
 }
