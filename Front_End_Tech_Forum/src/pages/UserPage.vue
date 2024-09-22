@@ -118,11 +118,11 @@ async function handleUserPerfilUpdate() {
             <span class="sr-only"></span>
         </div>
     </div>
-    <div v-else :class="{ 'mt-5': !exception }" class="row p-3 p-xl-0">
+    <div v-else :class="{ 'mt-5': !exception }" class="row p-3 p-xl-0 justify-content-around">
         <div v-if="exception" class="alert alert-danger mt-3" role="alert">
             {{ exception.error.message }}
         </div>
-        <div class="col-12 pe-0 col-xl-4 pe-xl-5 d-flex flex-column justify-content-center align-items-center">
+        <div class="col-12 p-0 col-lg-4 d-flex flex-column justify-content-center align-items-center">
             <div id="user-img" class="border border-2 rounded-circle bg-light overflow-hidden">
                 <img :src="userImage" class="w-100 h-100" alt="User Image">
             </div>
@@ -138,9 +138,9 @@ async function handleUserPerfilUpdate() {
             </div>
         </div>
         <hr class="d-block mt-4 d-xl-none mt-xl-0">
-        <form @submit.prevent="handleUserPerfilUpdate" class="col-12 col-xl-8 d-flex align-items-center">
+        <form @submit.prevent="handleUserPerfilUpdate" class="col-12 col-xl-6 d-flex align-items-center">
             <fieldset class="w-100">
-                <legend class="text-center border-bottom pb-3"> User
+                <legend class="text-center border-bottom pb-3"> Perfil
                     <PhUser />
                 </legend>
                 <div class="mb-3">
@@ -148,7 +148,7 @@ async function handleUserPerfilUpdate() {
                     <input disabled type="text" id="email" class="form-control" placeholder="email"
                         :value="userStore.email">
                 </div>
-                <div class="mb-3 border-top pt-3 mt-3">
+                <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input required v-model="usernameUpdate" type="text" id="username" class="form-control"
                         placeholder="username">

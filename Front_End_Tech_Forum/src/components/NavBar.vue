@@ -20,7 +20,7 @@ const homeRoute = computed(() => {
 <template>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" @click="router.push('/')">
+            <a class="navbar-brand" @click="router.push(homeRoute)">
                 <img class="me-3 img-link" src="../assets/Icon_Tech_Forum.svg" alt="">
                 <span class="lexend-font border-start ps-3 link">Tech Forum</span>
             </a>

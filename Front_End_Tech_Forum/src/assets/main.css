@@ -6,6 +6,22 @@
   font-family: 'Ubuntu';
 }
 
+.vh-80 {
+  height: 80vh;
+}
+
+.top-left-rounded {
+  border-top-left-radius: 10px;
+}
+
+.top-right-rounded {
+  border-top-right-radius: 10px !important;
+}
+
+.top-rouded {
+  border-radius: 10px 10px 0 0;
+}
+
 * {
   font-family: 'Lexend Deca', sans-serif;
 }

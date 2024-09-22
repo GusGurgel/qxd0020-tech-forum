@@ -4,15 +4,22 @@ import type { ThreadSet } from "@/types/index.js"
 import { useRouter } from 'vue-router';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
-import { PhWarningOctagon, PhPlus } from '@phosphor-icons/vue';
+import { PhWarningOctagon, PhPlus, PhTrash } from '@phosphor-icons/vue';
 import { isAxiosError } from 'axios';
 import { isApplicationError } from '@/composables/useApplicationError';
 import type { ApplicationError } from '@/types';
 import { useUserStore } from '@/stores/userStore';
+import BootstrapModal from '@/components/BootstrapModal.vue';
 
 const props = defineProps<{ editButtons: boolean }>();
 
 const threadSets = ref([] as ThreadSet[])
+
+const bodyTextRemoveModal = ref<string>('')
+const bodyComplementeTextRemoveModal = ref<string>('')
+const toRemoveNameThreadSet = ref<string>('')
+const toRemoveIdThreadSet = ref<number>()
+
 const exception = ref<ApplicationError>()
 const loading = ref(true)
 const router = useRouter()
@@ -24,10 +31,36 @@ function handleError(e: any) {
   }
 }
 
+async function removeThreadSet() {
+    const { data: childsThreadSets } = (await api.get('/threads', {
+      params: {
+        "filters[thread_set][id][$eq]": toRemoveIdThreadSet.value
+      }
+    })).data
+
+    for (const thread of childsThreadSets) {
+      await api.delete(`/threads/${thread.id}`, {
+        headers: {
+          Authorization: `Bearer ${userStore.jwt}`
+        }
+      })
+    }
+
+    await api.delete(`/thread-sets/${toRemoveIdThreadSet.value}`, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+    })
+    threadSets.value = threadSets.value.filter(val => val.id !== toRemoveIdThreadSet.value)
+}
+
 async function handleRemove(idThreadSet: number, nameThreadSet: string) {
   try {
     exception.value = undefined
     loading.value = true
+    toRemoveIdThreadSet.value = idThreadSet
+    toRemoveNameThreadSet.value = nameThreadSet
+
     const { data: childsThreadSets } = (await api.get('/threads', {
       params: {
         "filters[thread_set][id][$eq]": idThreadSet
@@ -40,22 +73,8 @@ async function handleRemove(idThreadSet: number, nameThreadSet: string) {
       messageComplemente = `\n\nThis Thread Set has ${childsThreadSets.length} Threads that will be removed with this action.`
     }
 
-    if (confirm(`Confirm thead "${nameThreadSet}" deletion.` + messageComplemente)) {
-      for (const thread of childsThreadSets) {
-        await api.delete(`/threads/${thread.id}`, {
-          headers: {
-            Authorization: `Bearer ${userStore.jwt}`
-          }
-        })
-      }
-
-      await api.delete(`/thread-sets/${idThreadSet}`, {
-        headers: {
-          Authorization: `Bearer ${userStore.jwt}`
-        }
-      })
-      threadSets.value = threadSets.value.filter(val => val.id !== idThreadSet)
-    }
+    bodyTextRemoveModal.value = `Confirm Thread Set "${toRemoveNameThreadSet.value}" deletion`;
+    bodyComplementeTextRemoveModal.value = messageComplemente;
   } catch (e) {
     handleError(e)
   } finally {
@@ -85,7 +104,7 @@ onMounted(async () => {
           "filters[thread_set][id][$eq]": threadSetData.id,
           "populate": "author",
           "sort": "createdAt:desc",
-          "pagination[limit]": 1 
+          "pagination[limit]": 1
         }
       })).data
 
@@ -108,6 +127,22 @@ onMounted(async () => {
 </script>
 
 <template>
+  <BootstrapModal :idModal="'remove-modal'" :labelModal="'modal'">
+    <template v-slot:header>
+      <h1 class="modal-title fs-5">Remove <strong>ThreadSet</strong> <PhTrash /> </h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </template>
+    <template v-slot:body>
+      {{ bodyTextRemoveModal }}
+      <div class="fw-bold mt-3">
+        {{ bodyComplementeTextRemoveModal }}
+      </div>
+    </template>
+    <template v-slot:footer>
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="removeThreadSet">Confirm</button>
+    </template>
+  </BootstrapModal>
   <div v-if="exception" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
     <PhWarningOctagon :size="32" />
     <div class="ms-3">
@@ -119,40 +154,22 @@ onMounted(async () => {
       <span class="sr-only"></span>
     </div>
   </div>
-  <main class="bg-light-subtle shadow row top-rounded mt-3">
-    <div class="shadow col-12 col-lg-4 bg-dark text-light top-left-rounded p-2 text-center">
+  <main class="bg-light-subtle shadow row mt-3">
+    <div class="shadow col-10 bg-dark text-light p-2 text-center"
+      :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
       Name
     </div>
     <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-2 text-center">
       Threads Created
     </div>
-    <div class="shadow d-none d-lg-block bg-dark text-light p-2 text-center" :class="{ 'col-5': editButtons, 'col-6': !editButtons }">
+    <div class="shadow d-none d-lg-block bg-dark text-light p-2 text-center col-lg-5">
       Last Thread
     </div>
     <button v-if="editButtons" @click="router.push('/create/threadset')"
-      class="btn btn-dark rounded-0 top-right-rounded text-center col-1 shadow">
+      class="btn btn-dark rounded-0 text-center col-2 col-lg-1 shadow">
       <PhPlus :size="20" />
     </button>
-    <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id"
-      :threadSet="{ ...threadSet }"
+    <ThreadSetEntry v-for="threadSet in threadSets" :key="threadSet.id" :threadSet="{ ...threadSet }"
       :editButtons="props.editButtons" @handleRemove="handleRemove" />
   </main>
 </template>
-
-<style scoped>
-.vh-80 {
-  height: 80vh;
-}
-
-.top-left-rounded {
-  border-top-left-radius: 10px;
-}
-
-.top-right-rounded {
-  border-top-right-radius: 10px !important;
-}
-
-.top-rounded {
-  border-radius: 10px 10px 0 0;
-}
-</style>

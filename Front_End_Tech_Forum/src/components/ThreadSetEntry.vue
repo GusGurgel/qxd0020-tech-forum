@@ -14,13 +14,14 @@ const router = useRouter()
 const lastThreadTitle = ref<string>("")
 const lastThreadAuthor = ref<string>("")
 const lastThreadCreateAt = ref<string>("")
+const stringLimit = 35
 
 if (props.threadSet.lastThread) {
   const { lastThread } = props.threadSet
   console.log(lastThread)
 
-  lastThreadTitle.value = lastThread.attributes.title
-  lastThreadAuthor.value = limitString(lastThread.attributes.author.data.attributes.username, 20)
+  lastThreadTitle.value = limitString(lastThread.attributes.title, stringLimit)
+  lastThreadAuthor.value = limitString(lastThread.attributes.author.data.attributes.username, stringLimit)
   lastThreadCreateAt.value = new Date(lastThread.attributes.createdAt).toLocaleDateString("en-US")
 }
 
@@ -28,7 +29,7 @@ if (props.threadSet.lastThread) {
 
 <template>
   <article @click="router.push(`/threadset/${threadSet.id}`)" class="row border-bottom gray-hover m-0 p-0">
-    <div class="col-12 p-3" :class="{ 'col-lg-6': !editButtons, 'col-lg-4': editButtons }">
+    <div class="col-10 p-3" :class="{ 'col-lg-5': !editButtons, 'col-lg-4': editButtons }">
       <div class="text-primary h5">
         {{ threadSet.name }}
       </div>
@@ -36,10 +37,10 @@ if (props.threadSet.lastThread) {
         {{ threadSet.description }}
       </div>
     </div>
-    <div class="col-12 col-lg-2 p-3 text-center">
+    <div class="d-none d-lg-block col-12 col-lg-2 p-3 text-center">
       {{ threadSet.threadCount }} Threads
     </div>
-    <div class="col-12 col-lg-5 p-3">
+    <div class="d-none d-lg-block col-12 p-3 col-lg-5">
       <div v-if="lastThreadTitle !== ''">
         <div>
           Title: <strong class="ubuntu-font">{{ lastThreadTitle }}</strong>
@@ -55,11 +56,11 @@ if (props.threadSet.lastThread) {
         <strong class="ubuntu-font">No threads 😭</strong> 
       </div>
     </div>
-    <div v-if="editButtons" class="text-center col-lg-1 d-flex align-items-center justify-content-center d-flex flex-column p-1">
+    <div v-if="editButtons" class="text-center col-2 col-lg-1 d-flex align-items-center justify-content-center d-flex flex-column p-1">
       <button @click.stop="router.push(`/edit/threadset/${threadSet.id}`)" class="btn btn-primary mb-2">
         <PhPencil />
       </button>
-      <button @click.stop="$emit('handleRemove', threadSet.id, threadSet.name)" class="btn btn-danger">
+      <button @click.stop="$emit('handleRemove', threadSet.id, threadSet.name)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remove-modal">
         <PhTrash />
       </button>
     </div>
