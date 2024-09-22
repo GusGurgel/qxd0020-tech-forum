@@ -2,19 +2,28 @@
 import type { ThreadSet } from "@/types/index.js"
 import { useRouter } from "vue-router";
 import { PhPencil, PhTrash } from "@phosphor-icons/vue";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { limitString } from "@/composables/useLimiteString";
+import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps<{
   threadSet: ThreadSet,
   editButtons: boolean
 }>()
 const router = useRouter()
+const userStore = useUserStore()
 
 const lastThreadTitle = ref<string>("")
 const lastThreadAuthor = ref<string>("")
 const lastThreadCreateAt = ref<string>("")
 const stringLimit = 35
+
+const threadSetRoute = computed<string>(() => {
+  if(userStore.isAuthenticated && userStore.role.toLocaleLowerCase() === "admin") {
+    return `admin/threadset/${props.threadSet.id}`
+  }
+  return `/threadset/${props.threadSet.id}`
+})
 
 if (props.threadSet.lastThread) {
   const { lastThread } = props.threadSet
@@ -27,7 +36,7 @@ if (props.threadSet.lastThread) {
 </script>
 
 <template>
-  <article @click="router.push(`/threadset/${threadSet.id}`)" class="row border-bottom gray-hover m-0 p-0">
+  <article @click="router.push(threadSetRoute)" class="row border-bottom gray-hover m-0 p-0">
     <div class="col-10 p-3" :class="{ 'col-lg-5': !editButtons, 'col-lg-4': editButtons }">
       <div class="text-primary h5">
         {{ threadSet.name }}

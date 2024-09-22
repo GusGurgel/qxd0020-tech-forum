@@ -17,10 +17,10 @@ const props = defineProps<{ editButtons: boolean }>();
 const threads = ref<Thread[]>([] as Thread[])
 const threadSet = ref<Pick<ThreadSet, "name">>()
 
-// const bodyTextRemoveModal = ref<string>('')
-// const bodyComplementeTextRemoveModal = ref<string>('')
-// const toRemoveNameThreadSet = ref<string>('')
-// const toRemoveIdThreadSet = ref<number>()
+const bodyTextRemoveModal = ref<string>('')
+const bodyComplementeTextRemoveModal = ref<string>('')
+const toRemoveTitleThread = ref<string>('')
+const toRemoveIdThread = ref<number>()
 
 const exception = ref<ApplicationError>()
 const loading = ref(true)
@@ -37,56 +37,56 @@ function handleError(e: any) {
   }
 }
 
-// async function removeThreadSet() {
-//     const { data: childsThreadSets } = (await api.get('/threads', {
-//       params: {
-//         "filters[thread_set][id][$eq]": toRemoveIdThreadSet.value
-//       }
-//     })).data
+async function removeThread() {
+  const { data: childsThread } = (await api.get('/responses', {
+    params: {
+      "filters[thread][id][$eq]": toRemoveIdThread.value
+    }
+  })).data
 
-//     for (const thread of childsThreadSets) {
-//       await api.delete(`/threads/${thread.id}`, {
-//         headers: {
-//           Authorization: `Bearer ${userStore.jwt}`
-//         }
-//       })
-//     }
+  for (const reponse of childsThread) {
+    await api.delete(`/responses/${reponse.id}`, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+    })
+  }
 
-//     await api.delete(`/thread-sets/${toRemoveIdThreadSet.value}`, {
-//       headers: {
-//         Authorization: `Bearer ${userStore.jwt}`
-//       }
-//     })
-//     threadSets.value = threadSets.value.filter(val => val.id !== toRemoveIdThreadSet.value)
-// }
+  await api.delete(`/threads/${toRemoveIdThread.value}`, {
+    headers: {
+      Authorization: `Bearer ${userStore.jwt}`
+    }
+  })
+  threads.value = threads.value.filter(val => val.id !== toRemoveIdThread.value)
+}
 
-// async function handleRemove(idThreadSet: number, nameThreadSet: string) {
-//   try {
-//     exception.value = undefined
-//     loading.value = true
-//     toRemoveIdThreadSet.value = idThreadSet
-//     toRemoveNameThreadSet.value = nameThreadSet
+async function handleRemove(idThread: number, titleThread: string) {
+  try {
+    exception.value = undefined
+    loading.value = true
+    toRemoveTitleThread.value = titleThread
+    toRemoveIdThread.value = idThread
 
-//     const { data: childsThreadSets } = (await api.get('/threads', {
-//       params: {
-//         "filters[thread_set][id][$eq]": idThreadSet
-//       }
-//     })).data
+    const { data: childsThreads } = (await api.get('/responses', {
+      params: {
+        "filters[thread][id][$eq]": idThread
+      }
+    })).data
 
-//     let messageComplemente = ""
+    let messageComplemente = ""
 
-//     if (childsThreadSets.length > 0) {
-//       messageComplemente = `\n\nThis Thread Set has ${childsThreadSets.length} Threads that will be removed with this action.`
-//     }
+    if (childsThreads.length > 0) {
+      messageComplemente = `\n\nThis Thread has ${childsThreads.length} Response that will be removed with this action.`
+    }
 
-//     bodyTextRemoveModal.value = `Confirm Thread Set "${toRemoveNameThreadSet.value}" deletion`;
-//     bodyComplementeTextRemoveModal.value = messageComplemente;
-//   } catch (e) {
-//     handleError(e)
-//   } finally {
-//     loading.value = false
-//   }
-// }
+    bodyTextRemoveModal.value = `Confirm Thread "${toRemoveTitleThread.value}" deletion`;
+    bodyComplementeTextRemoveModal.value = messageComplemente;
+  } catch (e) {
+    handleError(e)
+  } finally {
+    loading.value = false
+  }
+}
 
 onMounted(async () => {
   try {
@@ -96,7 +96,7 @@ onMounted(async () => {
       params: {
         "filters[thread_set][id][$eq]": idThreadSet,
         "populate": "author",
-        "sort": ["isFixed:desc", "createdAt:desc"] 
+        "sort": ["isFixed:desc", "createdAt:desc"]
       }
     })).data
 
@@ -122,9 +122,9 @@ onMounted(async () => {
         }
       })).data
 
-      let lastResponse : Response | null = null
+      let lastResponse: Response | null = null
 
-      if(lastResponseData.length > 0) {
+      if (lastResponseData.length > 0) {
         lastResponseData[0].createdAt = new Date(lastResponseData[0].createdAt)
         lastResponse = lastResponseData[0]
       }
@@ -151,28 +151,29 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!--   
   <BootstrapModal :idModal="'remove-modal'" :labelModal="'modal'">
     <template v-slot:header>
-      <h1 class="modal-title fs-5">Remove <strong>ThreadSet</strong> <PhTrash /> </h1>
+      <h1 class="modal-title fs-5">Remove <strong>Thread</strong>
+        <PhTrash class="ms-2"/>
+      </h1>
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </template>
-<template v-slot:body>
+    <template v-slot:body>
       {{ bodyTextRemoveModal }}
       <div class="fw-bold mt-3">
         {{ bodyComplementeTextRemoveModal }}
       </div>
     </template>
-<template v-slot:footer>
+    <template v-slot:footer>
       <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="removeThreadSet">Confirm</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="removeThread">Confirm</button>
     </template>
-</BootstrapModal>
--->
+  </BootstrapModal>
+
   <div v-if="exception" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
     <PhWarningOctagon :size="32" />
     <div class="ms-3">
-      Error trying to fetch <strong>Threads</strong>
+      Error trying to fetch <strong>Threads</strong>: {{ exception.error.message }}
     </div>
   </div>
   <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">
@@ -180,12 +181,17 @@ onMounted(async () => {
       <span class="sr-only"></span>
     </div>
   </div>
-  <div class="text-center p-2 bg-dark text-light shadow mt-3">
-    {{ threadSet?.name }}
-  </div>
-  <main class="bg-light-subtle shadow row m-0 mt-3">
-    <div class="shadow col-10 bg-dark text-light p-0 py-2 text-center"
-      :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
+  <main v-else class="bg-light-subtle shadow row m-0 mt-3">
+    <div class="text-center p-2 bg-dark text-light shadow mb-3" :class="userStore.isAuthenticated ? 'col-10 col-lg-11' : 'col-12'
+      ">
+      {{ threadSet?.name }}
+    </div>
+    <button v-if="userStore.isAuthenticated" @click="router.push(`/create/thread?threadSet=${idThreadSet}`)"
+      class="btn btn-dark mb-3 rounded-0 text-center col-2 col-lg-1 shadow">
+      <PhPlus :size="20" />
+    </button>
+    <div class="shadow bg-dark text-light p-0 py-2 text-center" :class="editButtons ? 'col-12 col-lg-5' : 'col-12 col-lg-5'
+      ">
       Title
     </div>
     <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-0 py-2 text-center">
@@ -194,10 +200,6 @@ onMounted(async () => {
     <div class="shadow d-none d-lg-block bg-dark text-light p-0 py-2 text-center col-lg-5">
       Last Response
     </div>
-    <button v-if="editButtons" @click="router.push('/create/threadset')"
-      class="btn btn-dark rounded-0 text-center col-2 col-lg-1 shadow">
-      <PhPlus :size="20" />
-    </button>
-    <ThreadEntry v-for="thread in threads" :key="thread.id" :thread="{...thread}" :editButtons="props.editButtons" />
+    <ThreadEntry v-for="thread in threads" :key="thread.id" :thread="{ ...thread }" :editButtons="editButtons" @handleRemove="handleRemove"/>
   </main>
 </template>

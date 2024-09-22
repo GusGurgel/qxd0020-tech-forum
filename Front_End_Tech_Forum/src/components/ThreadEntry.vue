@@ -4,20 +4,27 @@ import type { Thread } from "@/types/index.js"
 import { PhPencil, PhTrash } from "@phosphor-icons/vue";
 
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { limitString } from "@/composables/useLimiteString";
+import { useUserStore } from "@/stores/userStore";
 
 const props = defineProps<{
   thread: Thread,
   editButtons: boolean
 }>()
 const router = useRouter()
+const userStore = useUserStore()
+
+const threadRoute = computed<string>(() => {
+  if(userStore.isAuthenticated && userStore.role.toLocaleLowerCase() === "admin") {
+    return `admin/thread/${props.thread.id}`
+  }
+  return `/thread/${props.thread.id}`
+})
 
 const lastResponseAuthor = ref<string>("")
 const lastResponseCreateAt = ref<string>("")
 const stringLimit = 35
-
-console.log(props.thread)
 
 if (props.thread.lastResponse) {
   const { lastResponse } = props.thread
@@ -29,7 +36,7 @@ if (props.thread.lastResponse) {
 </script>
 
 <template>
-  <article @click="router.push(`/thread/${thread.id}`)" class="row border-bottom gray-hover m-0 p-0">
+  <article @click="router.push(threadRoute)" class="row border-bottom gray-hover m-0 p-0">
     <div class="col-10 p-3" :class="{ 'col-lg-5': !editButtons, 'col-lg-4': editButtons }">
       <div class="text-primary h5">
         {{ thread.title }}
@@ -55,7 +62,7 @@ if (props.thread.lastResponse) {
       </div>
     </div>
     <div v-if="editButtons" class="text-center col-2 col-lg-1 d-flex align-items-center justify-content-center d-flex flex-column p-1">
-      <button @click.stop="router.push(`/edit/threadset/${thread.id}`)" class="btn btn-primary mb-2">
+      <button @click.stop="router.push(`/edit/thread/${thread.id}`)" class="btn btn-primary mb-2">
         <PhPencil />
       </button>
       <button @click.stop="$emit('handleRemove', thread.id, thread.title)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remove-modal">

@@ -21,21 +21,35 @@ const exception = ref<ApplicationError>()
 
 const inputEnter = computed<boolean>(() => (name.value !== oldName.value) || (description.value !== odlDescription.value))
 
+function handleError(e: any) {
+  if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+    exception.value = e.response?.data
+  } else {
+    console.log(e)
+  }
+}
+
 onMounted(async () => {
-  loading.value = true
+  try {
+    loading.value = true
 
-  const { data: threadSetData } = (await api.get(`/thread-sets/${threadSetId.value}`, {
-    headers: {
-      Authorization: `Bearer ${userStore.jwt}`
-    }
-  })).data
+    const { data: threadSetData } = (await api.get(`/thread-sets/${threadSetId.value}`, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+    })).data
 
-  loading.value = false
+    loading.value = false
 
-  name.value = threadSetData.name
-  oldName.value = threadSetData.name
-  description.value = threadSetData.description
-  odlDescription.value = threadSetData.description
+    name.value = threadSetData.name
+    oldName.value = threadSetData.name
+    description.value = threadSetData.description
+    odlDescription.value = threadSetData.description
+  }catch(e) {
+      handleError(e)
+  } finally {
+    loading.value = false
+  }
 })
 
 async function handleUpdate(e: Event) {
@@ -54,18 +68,16 @@ async function handleUpdate(e: Event) {
 
     loading.value = true
 
-    const { data } = await api.put(`/thread-sets/${threadSetId.value}`, formData, {
+    const { data: threadSetData } = (await api.put(`/thread-sets/${threadSetId.value}`, formData, {
       headers: {
         Authorization: `Bearer ${userStore.jwt}`
       }
-    })
+    })).data
 
-    const threadSetData = data.data
-
-    name.value = threadSetData.attributes.name
-    oldName.value = threadSetData.attributes.name
-    description.value = threadSetData.attributes.description
-    odlDescription.value = threadSetData.attributes.description
+    name.value = threadSetData.name
+    oldName.value = threadSetData.name
+    description.value = threadSetData.description
+    odlDescription.value = threadSetData.description
   } catch (e) {
     if (isAxiosError(e) && isApplicationError(e.response?.data)) {
       exception.value = e.response?.data

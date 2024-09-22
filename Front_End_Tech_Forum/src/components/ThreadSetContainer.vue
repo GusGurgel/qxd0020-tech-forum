@@ -150,7 +150,7 @@ onMounted(async () => {
   <div v-if="exception" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
     <PhWarningOctagon :size="32" />
     <div class="ms-3">
-      Error trying to fetch <strong>Threads Set</strong>
+      Error trying to fetch <strong>Threads Set</strong>: {{ exception.error.message }}
     </div>
   </div>
   <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">
