@@ -154,15 +154,15 @@ onMounted(async () => {
       <span class="sr-only"></span>
     </div>
   </div>
-  <main class="bg-light-subtle shadow row mt-3">
-    <div class="shadow col-10 bg-dark text-light p-2 text-center"
+  <main class="bg-light-subtle shadow row m-0 mt-3">
+    <div class="shadow col-10 bg-dark text-light p-0 py-2 text-center"
       :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
       Name
     </div>
-    <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-2 text-center">
+    <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-0 py-2 text-center">
       Threads Created
     </div>
-    <div class="shadow d-none d-lg-block bg-dark text-light p-2 text-center col-lg-5">
+    <div class="shadow d-none d-lg-block bg-dark text-light p-0 py-2 text-center col-lg-5">
       Last Thread
     </div>
     <button v-if="editButtons" @click="router.push('/create/threadset')"

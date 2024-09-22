@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
 import PublicHomePage from '@/pages/PublicHomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
-import ThreadSetPage from '@/pages/ThreadSetPage.vue'
+import ThreadsPage from '@/pages/ThreadsPage.vue'
 import NotFoundPage from '@/pages/NotFoundPage.vue'
 import AdminHomePage from '@/pages/admin/AdminHomePage.vue'
-import { useUserStore } from '@/stores/userStore'
 import UserPage from '@/pages/UserPage.vue'
 import RegisterPage from '@/pages/RegisterPage.vue'
 import FormEditThreadSetPage from '@/pages/admin/FormEditThreadSetPage.vue'
@@ -31,7 +31,7 @@ const router = createRouter({
     {
       path: '/threadset/:id',
       name: 'threadset',
-      component: ThreadSetPage
+      component: ThreadsPage
     },
     {
       path: '/admin',

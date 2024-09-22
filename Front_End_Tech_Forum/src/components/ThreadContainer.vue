@@ -1,65 +1,203 @@
 <script setup lang="ts">
-import type { ApplicationError } from '@/types';
+import type { ThreadSet, ApplicationError, Thread } from "@/types/index.js"
+
+import BootstrapModal from '@/components/BootstrapModal.vue';
+import ThreadEntry from './ThreadEntry.vue'
+import { PhWarningOctagon, PhPlus, PhTrash } from '@phosphor-icons/vue';
+
+import { useRouter, useRoute } from 'vue-router';
 import { api } from '@/api';
 import { onMounted, ref } from 'vue';
-import type { Thread } from '@/types';
-import { isApplicationError } from '@/composables/useApplicationError';
 import { isAxiosError } from 'axios';
-import ThreadEntry from "@/components/ThreadEntry.vue"
+import { isApplicationError } from '@/composables/useApplicationError';
 import { useUserStore } from '@/stores/userStore';
-import { limitString } from '@/composables/useLimiteString';
 
-const props = defineProps<{ idThreadSet: number }>()
+const props = defineProps<{ editButtons: boolean }>();
 
-const Threads = ref([] as Thread[])
+const threads = ref<Thread[]>([] as Thread[])
+const threadSet = ref<Pick<ThreadSet, "name">>()
+
+// const bodyTextRemoveModal = ref<string>('')
+// const bodyComplementeTextRemoveModal = ref<string>('')
+// const toRemoveNameThreadSet = ref<string>('')
+// const toRemoveIdThreadSet = ref<number>()
+
 const exception = ref<ApplicationError>()
 const loading = ref(true)
+const router = useRouter()
+const route = useRoute()
+
+const idThreadSet = route.params.id
+
 const userStore = useUserStore()
+
+function handleError(e: any) {
+  if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+    exception.value = e.response?.data
+  }
+}
+
+// async function removeThreadSet() {
+//     const { data: childsThreadSets } = (await api.get('/threads', {
+//       params: {
+//         "filters[thread_set][id][$eq]": toRemoveIdThreadSet.value
+//       }
+//     })).data
+
+//     for (const thread of childsThreadSets) {
+//       await api.delete(`/threads/${thread.id}`, {
+//         headers: {
+//           Authorization: `Bearer ${userStore.jwt}`
+//         }
+//       })
+//     }
+
+//     await api.delete(`/thread-sets/${toRemoveIdThreadSet.value}`, {
+//       headers: {
+//         Authorization: `Bearer ${userStore.jwt}`
+//       }
+//     })
+//     threadSets.value = threadSets.value.filter(val => val.id !== toRemoveIdThreadSet.value)
+// }
+
+// async function handleRemove(idThreadSet: number, nameThreadSet: string) {
+//   try {
+//     exception.value = undefined
+//     loading.value = true
+//     toRemoveIdThreadSet.value = idThreadSet
+//     toRemoveNameThreadSet.value = nameThreadSet
+
+//     const { data: childsThreadSets } = (await api.get('/threads', {
+//       params: {
+//         "filters[thread_set][id][$eq]": idThreadSet
+//       }
+//     })).data
+
+//     let messageComplemente = ""
+
+//     if (childsThreadSets.length > 0) {
+//       messageComplemente = `\n\nThis Thread Set has ${childsThreadSets.length} Threads that will be removed with this action.`
+//     }
+
+//     bodyTextRemoveModal.value = `Confirm Thread Set "${toRemoveNameThreadSet.value}" deletion`;
+//     bodyComplementeTextRemoveModal.value = messageComplemente;
+//   } catch (e) {
+//     handleError(e)
+//   } finally {
+//     loading.value = false
+//   }
+// }
 
 onMounted(async () => {
   try {
-    const dataThreads = (await api.get('/threads', {
-      headers: {
-        Authorization: `Bearer ${userStore.jwt}`
-      },
+    loading.value = true
+    const threadSetData = (await api.get(`/thread-sets/${idThreadSet}`)).data
+    const threadsData = (await api.get(`/threads/`, {
       params: {
+        "filters[thread_set][id][$eq]": idThreadSet,
         "populate": "author",
         "sort": ["isFixed:desc", "createdAt:desc"] 
       }
     })).data
 
-    const threadsData = dataThreads.data;
-    console.log(threadsData)
+    const dataThreadSet = threadSetData.data;
+    const dataThreads = threadsData.data
 
-    for (const thread of threadsData) {
-      const author = thread.attributes.author.data
+    threadSet.value = {
+      name: dataThreadSet.attributes.name
+    }
 
-      Threads.value.push({
-        id: thread.id,
-        title: thread.attributes.title,
-        isFixed: thread.attributes.isFixed,
-        createdAt: new Date(thread.attributes.createdAt),
+    console.log(dataThreads)
+
+    for (const threadData of dataThreadSet) {
+
+      // ---------- Pegar dados das reposta mais tarde -------------
+      // Pegar dados das threads contidas no threadset
+      // const dataThreads = (await api.get('/threads', {
+      //   params: {
+      //     "filters[thread_set][id][$eq]": threadSetData.id,
+      //     "populate": "author"
+      //   }
+      // })).data
+
+      // // Pegar dados da última thread do threadset
+      // const dataLastThread = (await api.get('/threads', {
+      //   params: {
+      //     "filters[thread_set][id][$eq]": threadSetData.id,
+      //     "populate": "author",
+      //     "sort": "createdAt:desc",
+      //     "pagination[limit]": 1
+      //   }
+      // })).data
+
+      threads.value.push({
+        id: parseInt(threadData.id),
+        title: String(threadData.attributes.title),
+        createdAt: new Date(threadData.attributes.createdAt),
+        isFixed: Boolean(threadData.isFixed),
         author: {
-          username: limitString(author.attributes.username, 25),
+          username: threadData.attributes.author.data.attributes.name
         }
       })
     }
-
   } catch (e) {
-    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-      exception.value = e.response?.data
-    }
+    handleError(e)
   } finally {
     loading.value = false
   }
 })
+
 </script>
 
 <template>
-  <table class="table table-hover shadow">
-    <tbody>
-      <ThreadEntry v-for="thread in Threads" :key="thread.id" :id="thread.id" :title="thread.title"
-        :author="thread.author" :isFixed="thread.isFixed" :createdAt="thread.createdAt" />
-    </tbody>
-  </table>
+  <!--   
+  <BootstrapModal :idModal="'remove-modal'" :labelModal="'modal'">
+    <template v-slot:header>
+      <h1 class="modal-title fs-5">Remove <strong>ThreadSet</strong> <PhTrash /> </h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </template>
+<template v-slot:body>
+      {{ bodyTextRemoveModal }}
+      <div class="fw-bold mt-3">
+        {{ bodyComplementeTextRemoveModal }}
+      </div>
+    </template>
+<template v-slot:footer>
+      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="removeThreadSet">Confirm</button>
+    </template>
+</BootstrapModal>
+-->
+  <div v-if="exception" class="alert alert-danger mt-2 d-flex align-items-center" role="alert">
+    <PhWarningOctagon :size="32" />
+    <div class="ms-3">
+      Error trying to fetch <strong>Threads Set</strong>
+    </div>
+  </div>
+  <div v-if="loading" class="vh-80 d-flex justify-content-center align-items-center">
+    <div class="spinner-border text-dark" role="status">
+      <span class="sr-only"></span>
+    </div>
+  </div>
+  <div class="text-center p-2 bg-dark text-light shadow mt-3">
+    {{ threadSet?.name }}
+  </div>
+  <main class="bg-light-subtle shadow row m-0 mt-3">
+    <div class="shadow col-10 bg-dark text-light p-0 py-2 text-center"
+      :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
+      Name
+    </div>
+    <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-0 py-2 text-center">
+      Threads Created
+    </div>
+    <div class="shadow d-none d-lg-block bg-dark text-light p-0 py-2 text-center col-lg-5">
+      Last Thread
+    </div>
+    <button v-if="editButtons" @click="router.push('/create/threadset')"
+      class="btn btn-dark rounded-0 text-center col-2 col-lg-1 shadow">
+      <PhPlus :size="20" />
+    </button>
+    <!-- <ThreadEntry v-for="thread in Threads" :key="thread.id" :id="thread.id" :title="thread.title"
+      :author="thread.author" :isFixed="thread.isFixed" :createdAt="thread.createdAt" /> -->
+  </main>
 </template>
