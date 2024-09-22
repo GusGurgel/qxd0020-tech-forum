@@ -98,8 +98,8 @@ async function handleUpdate(e: Event) {
       </div>
       <div class="p-3">
         <div class="form-group mt-3">
-          <label for="title">Name</label>
-          <input v-model="name" type="text" id="description" class="form-control">
+          <label for="name">Name</label>
+          <input v-model="name" type="text" id="name" class="form-control">
         </div>
         <div class="form-group mt-3">
           <label for="description">Description</label>
