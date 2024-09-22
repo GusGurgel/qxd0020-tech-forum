@@ -12,6 +12,10 @@ Content-Type: application/json
     "password": "123456"
 }
 
+### users find
+GET {{baseURL}}/api/users/?populate=role
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzI2NTgyNDAzLCJleHAiOjE3MjkxNzQ0MDN9.X0mm23w3PcAwg8iktRXqgCmgH5lyIHErDRNOUxT1f4s
+
 ### update
 PUT {{baseURL}}/api/users/2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzI2NTgyNDAzLCJleHAiOjE3MjkxNzQ0MDN9.X0mm23w3PcAwg8iktRXqgCmgH5lyIHErDRNOUxT1f4s

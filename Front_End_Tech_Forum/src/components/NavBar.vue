@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { PhUser, PhHouseSimple, PhSignOut } from '@phosphor-icons/vue';
+import { PhUser, PhHouseSimple, PhSignOut, PhUsers } from '@phosphor-icons/vue';
 import { useUserStore } from '@/stores/userStore'
 import { computed } from 'vue';
 
@@ -30,6 +30,12 @@ const homeRoute = computed(() => {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto nav-underline">
+                    <li class="nav-item link">
+                        <RouterLink class="lexend-font nav-link" :to="'/admin/users'">
+                            Users
+                            <PhUsers weight="fill" />
+                        </RouterLink>
+                    </li>
                     <li class="nav-item link">
                         <RouterLink class="lexend-font nav-link" :to="homeRoute">
                             Home

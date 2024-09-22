@@ -42,6 +42,8 @@ export type User = {
   role: Role,
   image: Image,
   email: string
+  createdAt?: Date
+  blocked?: boolean
 }
 
 export interface ApplicationError {

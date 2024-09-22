@@ -18,6 +18,7 @@
     "@phosphor-icons/vue": "^2.2.1",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "marked": "^14.1.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"

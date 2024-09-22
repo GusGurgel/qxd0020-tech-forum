@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import type { Response } from "@/types/index.js"
 
-import { PhPencil, PhTrash, PhPushPin } from "@phosphor-icons/vue";
+import { PhTrash } from "@phosphor-icons/vue";
 
-import { useRouter } from "vue-router";
-import { computed, ref } from "vue";
-import { limitString } from "@/composables/useLimiteString";
-import { useUserStore } from "@/stores/userStore";
+import { computed } from "vue";
 import { formatDate } from "@/composables/useFormatDate";
 import { useUploadFile } from "@/composables/useUploadURL";
+import { marked } from "marked";
 
 const props = defineProps<{
   response: Response,
   editButtons: boolean
 }>()
-const router = useRouter()
 
 const userImage = computed(() => {
     if (props.response.author?.image) {
@@ -45,10 +42,9 @@ const userImage = computed(() => {
       </div>
     </div>
     <hr class="d-block d-lg-none mt-3">
-    <div class="col-12 p-0 text-center" :class="
+    <div class="col-12 p-0" :class="
       editButtons ? 'col-lg-8' : 'col-lg-9'
-    ">
-      {{ response.content }}
+    " v-html="marked.parse(response.content)">
     </div>
     <div v-if="editButtons" class="text-center col-2 col-lg-1 d-flex align-items-center justify-content-center d-flex flex-column p-1">
       <button @click.stop="$emit('handleRemove', response.id, response.author.username)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#remove-modal">
