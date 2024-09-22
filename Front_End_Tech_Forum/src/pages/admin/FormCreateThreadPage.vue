@@ -132,7 +132,7 @@ async function handleCreate(e: Event) {
             </option>
           </select>
         </div>
-        <div class="form-check mt-3 form-switch">
+        <div v-if="userStore.role.toLocaleLowerCase() === 'admin'" class="form-check mt-3 form-switch">
           <input v-model="isFixed" class="form-check-input" type="checkbox" id="is-fixed">
           <label class="form-check-label" for="is-fixed">IsFixed</label>
         </div>

@@ -362,135 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiResponseResponse extends Schema.CollectionType {
-  collectionName: 'responses';
-  info: {
-    singularName: 'response';
-    pluralName: 'responses';
-    displayName: 'Response';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    content: Attribute.RichText &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-      }>;
-    author: Attribute.Relation<
-      'api::response.response',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    thread: Attribute.Relation<
-      'api::response.response',
-      'oneToOne',
-      'api::thread.thread'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::response.response',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::response.response',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiThreadThread extends Schema.CollectionType {
-  collectionName: 'threads';
-  info: {
-    singularName: 'thread';
-    pluralName: 'threads';
-    displayName: 'Thread';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetMinMaxLength<{
-        maxLength: 200;
-      }>;
-    isFixed: Attribute.Boolean & Attribute.DefaultTo<false>;
-    thread_set: Attribute.Relation<
-      'api::thread.thread',
-      'oneToOne',
-      'api::thread-set.thread-set'
-    >;
-    author: Attribute.Relation<
-      'api::thread.thread',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::thread.thread',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::thread.thread',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiThreadSetThreadSet extends Schema.CollectionType {
-  collectionName: 'thread_sets';
-  info: {
-    singularName: 'thread-set';
-    pluralName: 'thread-sets';
-    displayName: 'ThreadSet';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.Unique &
-      Attribute.SetMinMaxLength<{
-        minLength: 1;
-        maxLength: 100;
-      }>;
-    description: Attribute.Text & Attribute.Required;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::thread-set.thread-set',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::thread-set.thread-set',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -917,6 +788,135 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiResponseResponse extends Schema.CollectionType {
+  collectionName: 'responses';
+  info: {
+    singularName: 'response';
+    pluralName: 'responses';
+    displayName: 'Response';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    content: Attribute.RichText &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+      }>;
+    author: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    thread: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'api::thread.thread'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::response.response',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiThreadThread extends Schema.CollectionType {
+  collectionName: 'threads';
+  info: {
+    singularName: 'thread';
+    pluralName: 'threads';
+    displayName: 'Thread';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
+    isFixed: Attribute.Boolean & Attribute.DefaultTo<false>;
+    thread_set: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'api::thread-set.thread-set'
+    >;
+    author: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::thread.thread',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiThreadSetThreadSet extends Schema.CollectionType {
+  collectionName: 'thread_sets';
+  info: {
+    singularName: 'thread-set';
+    pluralName: 'thread-sets';
+    displayName: 'ThreadSet';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.Unique &
+      Attribute.SetMinMaxLength<{
+        minLength: 1;
+        maxLength: 100;
+      }>;
+    description: Attribute.Text & Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::thread-set.thread-set',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::thread-set.thread-set',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -927,9 +927,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::response.response': ApiResponseResponse;
-      'api::thread.thread': ApiThreadThread;
-      'api::thread-set.thread-set': ApiThreadSetThreadSet;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -938,6 +935,9 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::response.response': ApiResponseResponse;
+      'api::thread.thread': ApiThreadThread;
+      'api::thread-set.thread-set': ApiThreadSetThreadSet;
     }
   }
 }

@@ -38,7 +38,7 @@ async function removeThreadSet() {
       params: {
         "filters[thread_set][id][$eq]": toRemoveIdThreadSet.value
       }
-    }))
+    })).data
 
     for (const thread of childsThreadSets) {
       await api.delete(`/threads/${thread.id}`, {
@@ -137,9 +137,11 @@ onMounted(async () => {
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </template>
     <template v-slot:body>
-      {{ bodyTextRemoveModal }}
-      <div class="fw-bold mt-3">
-        {{ bodyComplementeTextRemoveModal }}
+      <div class="text-break">
+        {{ bodyTextRemoveModal }}
+        <div class="fw-bold mt-3">
+          {{ bodyComplementeTextRemoveModal }}
+        </div>
       </div>
     </template>
     <template v-slot:footer>
