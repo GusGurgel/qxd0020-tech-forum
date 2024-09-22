@@ -18,7 +18,7 @@ const userStore = useUserStore()
 
 const threadRoute = computed<string>(() => {
   if(userStore.isAuthenticated && userStore.role.toLocaleLowerCase() === "admin") {
-    return `admin/thread/${props.thread.id}`
+    return `/admin/thread/${props.thread.id}`
   }
   return `/thread/${props.thread.id}`
 })
