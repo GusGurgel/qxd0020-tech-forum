@@ -12,7 +12,7 @@ import { isAxiosError } from 'axios';
 import { isApplicationError } from '@/composables/useApplicationError';
 import { useUserStore } from '@/stores/userStore';
 
-const props = defineProps<{ editButtons: boolean }>();
+defineProps<{ editButtons: boolean }>();
 
 const threads = ref<Thread[]>([] as Thread[])
 const threadSet = ref<Pick<ThreadSet, "name">>()
