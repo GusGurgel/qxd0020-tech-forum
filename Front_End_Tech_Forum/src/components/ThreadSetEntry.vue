@@ -5,6 +5,7 @@ import { PhPencil, PhTrash } from "@phosphor-icons/vue";
 import { computed, ref } from "vue";
 import { limitString } from "@/composables/useLimiteString";
 import { useUserStore } from "@/stores/userStore";
+import { formatDate } from "@/composables/useFormatDate";
 
 const props = defineProps<{
   threadSet: ThreadSet,
@@ -30,7 +31,7 @@ if (props.threadSet.lastThread) {
 
   lastThreadTitle.value = limitString(lastThread.title, stringLimit)
   lastThreadAuthor.value = limitString(lastThread.author.username, stringLimit)
-  lastThreadCreateAt.value = new Date(lastThread.createdAt).toLocaleDateString("en-US")
+  lastThreadCreateAt.value = formatDate(new Date(lastThread.createdAt))
 }
 
 </script>

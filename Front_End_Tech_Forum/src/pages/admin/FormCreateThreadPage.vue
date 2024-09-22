@@ -5,15 +5,25 @@ import { isApplicationError } from '@/composables/useApplicationError';
 import { PhPencil } from '@phosphor-icons/vue';
 import { isAxiosError } from 'axios';
 import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 
+const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 const idThreadSet = route.query?.threadSet ? route.query.threadSet : null;
 
 const title = ref<string>('');
 const isFixed = ref<boolean>(false);
 const threadSetId = ref<number|null>(null);
 const threadSets = ref<ThreadSet[]>([] as ThreadSet[]);
+
+const threadSetRoute = computed(() => {
+  if(userStore.role.toLocaleLowerCase() === "admin") {
+    return `/admin/threadset/${threadSetId.value}`
+  }
+  return `/threadset/${threadSetId.value}`
+})
 
 const loading = ref(false)
 const exception = ref<ApplicationError>()
@@ -55,43 +65,39 @@ onMounted(async () => {
   }
 })
 
-// async function handleUpdate(e: Event) {
-//   e.preventDefault()
+async function handleCreate(e: Event) {
+  e.preventDefault()
 
-//   try {
-//     exception.value = undefined;
-//     if (!inputEnter.value) {
-//       return
-//     }
-//     const formData = new FormData();
-//     formData.append("data", JSON.stringify({
-//       "title": title.value.trim(),
-//       "thread_set": threadSetId.value,
-//       "isFixed": isFixed.value
-//     }))
+  try {
+    exception.value = undefined;
+    if (!inputEnter.value) {
+      return
+    }
+    const formData = new FormData();
+    formData.append("data", JSON.stringify({
+      "title": title.value.trim(),
+      "thread_set": threadSetId.value,
+      "isFixed": isFixed.value,
+      "author":  userStore.id
+    }))
 
-//     loading.value = true
+    loading.value = true
 
-//     const { data: threadData } = (await api.put(`/threads/${idThread.value}`, formData, {
-//       headers: {
-//         Authorization: `Bearer ${userStore.jwt}`
-//       }
-//     })).data
+    await api.post(`/threads/`, formData, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`
+      }
+    })
 
-//     title.value = threadData.title
-//     oldTitle.value = threadData.title
-//     isFixed.value = threadData.isFixed
-//     oldIsFixed.value = threadData.isFixed
-//     threadSetId.value = threadData.thread_set.id
-//     oldThreadSetId.value = threadData.thread_set.id
-//   } catch (e) {
-//     if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-//       exception.value = e.response?.data
-//     }
-//   } finally {
-//     loading.value = false
-//   }
-// }
+    router.push(threadSetRoute.value)
+  } catch (e) {
+    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+      exception.value = e.response?.data
+    }
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
@@ -104,7 +110,7 @@ onMounted(async () => {
         <span class="sr-only"></span>
       </div>
     </div>
-    <form v-else @submit.prevent="console.log" class="p-0 mt-3 col-12 col-lg-6 bg-light-subtle shadow top-rouded">
+    <form v-else @submit.prevent="handleCreate" class="p-0 mt-3 col-12 col-lg-6 bg-light-subtle shadow top-rouded">
       <div class="bg-dark text-light p-3 text-center top-rouded">
         <h4 class="m-0 p-0">
           <div class="d-flex align-items-center justify-content-center">
@@ -120,7 +126,7 @@ onMounted(async () => {
         </div>
         <div class="form-group mt-3">
           <label for="thread-set">ThreadSet</label>
-          <select v-model="threadSetId" id="thread-set" class="form-select" aria-label="Default select example">
+          <select disabled v-model="threadSetId" id="thread-set" class="form-select" aria-label="Default select example">
             <option v-for="threadSet in threadSets" :key="threadSet.id" :value="threadSet.id">
               {{ threadSet.name }}
             </option>

@@ -76,7 +76,7 @@ const router = createRouter({
       path: '/create/thread/',
       component: FormCreateThreadPage,
       meta: {
-        requiresAdminAuth: true
+        requiresAuth: true
       }
     },
     {

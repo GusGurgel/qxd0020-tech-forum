@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { Thread } from "@/types/index.js"
 
-import { PhPencil, PhTrash } from "@phosphor-icons/vue";
+import { PhPencil, PhTrash, PhPushPin } from "@phosphor-icons/vue";
 
 import { useRouter } from "vue-router";
 import { computed, ref } from "vue";
 import { limitString } from "@/composables/useLimiteString";
 import { useUserStore } from "@/stores/userStore";
+import { formatDate } from "@/composables/useFormatDate";
 
 const props = defineProps<{
   thread: Thread,
@@ -37,18 +38,24 @@ if (props.thread.lastResponse) {
 
 <template>
   <article @click="router.push(threadRoute)" class="row border-bottom gray-hover m-0 p-0">
-    <div class="col-10 p-3" :class="{ 'col-lg-5': !editButtons, 'col-lg-4': editButtons }">
+    <div class="col-10 py-3 col-lg-5">
       <div class="text-primary h5">
+        <PhPushPin v-if="thread.isFixed" class="me-1 text-warning" :size="20" />
         {{ thread.title }}
       </div>
       <div class="small">
         Create by <strong class="ubuntu-font">{{ thread.author.username }}</strong>
       </div>
+      <div class="small">
+        in <strong class="ubuntu-font">{{ formatDate(thread.createdAt) }}</strong>
+      </div>
     </div>
-    <div class="d-none d-lg-block col-12 col-lg-2 p-3 text-center">
+    <div class="d-none d-lg-block col-12 col-lg-2 py-3 text-center">
       {{ thread.reponsesCount }} Responses
     </div>
-    <div class="d-none d-lg-block col-12 p-3 col-lg-5 text-center">
+    <div class="d-none d-lg-block col-12 py-3 text-center" :class="
+      editButtons ? 'col-lg-4' : 'col-lg-5'
+    ">
       <div v-if="lastResponseAuthor !== ''">
         <div>
           Author: <strong class="ubuntu-font">{{ lastResponseAuthor }}</strong>
@@ -75,5 +82,9 @@ if (props.thread.lastResponse) {
 <style scoped>
 .gray-hover:hover {
   background-color: #f0f0f0;
+}
+
+.fixed-thread {
+  background-color: aliceblue;
 }
 </style>
