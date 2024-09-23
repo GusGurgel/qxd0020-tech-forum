@@ -54,13 +54,13 @@ Gustavo Gurgel Medeiros, 539226, Ciência da Computação
 
 | Entidade | Criação | Leitura | Atualização | Remoção |
 | -------- | ------- | ------- | ----------- | ------- |
-| Usuário  | X       | X       |             | X       |
+| Usuário  | X       | X       | X           |         |
 | Tópico   | X       | X       | X           | X       |
-| Resposta | X       | X       | X           | X       |
+| Resposta | X       | X       |             | X       |
 | Conjunto | X       | X       | X           | X       |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
 ## Rotas da API REST utilizadas
 
-?
+Boa parte das rotas utilizada está na pasta `Back_End_Requests\`
