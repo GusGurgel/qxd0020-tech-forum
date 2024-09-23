@@ -30,7 +30,7 @@ const homeRoute = computed(() => {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto nav-underline">
-                    <li class="nav-item link">
+                    <li v-if="userStore?.role?.toLocaleLowerCase() === 'admin'" class="nav-item link">
                         <RouterLink class="lexend-font nav-link" :to="'/admin/users'">
                             Users
                             <PhUsers weight="fill" />
