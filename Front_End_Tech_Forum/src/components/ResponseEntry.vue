@@ -41,8 +41,7 @@ const userImage = computed(() => {
         </div>
       </div>
     </div>
-    <hr class="d-block d-lg-none mt-3">
-    <div class="col-12 p-0" :class="
+    <div class="col-12 p-0 mt-3 p-4" :class="
       editButtons ? 'col-lg-8' : 'col-lg-9'
     " v-html="marked.parse(response.content)">
     </div>

@@ -161,8 +161,8 @@ onMounted(async () => {
     </div>
   </div>
   <main v-else class="bg-light-subtle shadow row m-0 mt-3">
-    <div class="shadow col-10 bg-dark text-light p-0 py-2 text-center"
-      :class="{ 'col-lg-4': editButtons, 'col-lg-5': !editButtons }">
+    <div class="shadow bg-dark text-light p-0 py-2 text-center"
+      :class="{ 'col-10 col-lg-4': editButtons, 'col-12 col-lg-5': !editButtons }">
       Name
     </div>
     <div class="shadow d-none d-lg-block col-2 bg-dark text-light p-0 py-2 text-center">

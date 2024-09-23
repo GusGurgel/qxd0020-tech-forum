@@ -127,8 +127,8 @@ onMounted(async () => {
   </div>
   <main v-else class="bg-light-subtle shadow row m-0 mt-3">
     <div
-      class="text-center overflow-hidden p-2 col-10 bg-dark d-flex align-items-center justify-content-center text-light shadow"
-      :class="userStore.isAuthenticated ? 'col-lg-10' : 'col-lg-12'">
+      class="text-center overflow-hidden col-10 p-2 bg-dark d-flex align-items-center justify-content-center text-light shadow"
+      :class="{'col-12': !userStore.isAuthenticated}">
       <div>
         {{ thread.title }}
       </div>
