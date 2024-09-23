@@ -64,3 +64,25 @@ Gustavo Gurgel Medeiros, 539226, Ciência da Computação
 ## Rotas da API REST utilizadas
 
 Boa parte das rotas utilizada está na pasta `Back_End_Requests\`
+
+| Method   | End Point              | Access Roles                                                                  |
+| -------- | ---------------------- | ----------------------------------------------------------------------------- |
+| `GET`    | `/api/thread-sets/`    | Public, Auth, Admin                                                           |
+| `GET`    | `/api/thread-sets/:id` | Public, Auth, Admin                                                           |
+| `GET`    | `/api/threads/`        | Public, Auth, Admin                                                           |
+| `GET`    | `/api/threads/:id`     | Public, Auth, Admin                                                           |
+| `GET`    | `/api/reponses/`       | Public, Auth, Admin                                                           |
+| `GET`    | `/api/reponses/:id`    | Public, Auth, Admin                                                           |
+| `GET`    | `/api/users/`          | Public, Auth, Admin                                                           |
+| `GET`    | `/api/users/me`        | Auth, Admin                                                                   |
+| `POST`   | `/api/thread-sets/`    | Admin                                                                         |
+| `POST`   | `/api/threads/`        | Auth, Admin                                                                   |
+| `POST`   | `/api/reponses/`       | Auth, Admin                                                                   |
+| `POST`   | `/api/auth/local`      | Public, Auth, Admin                                                           |
+| `POST`   | `/api/register/local`  | Public, Auth, Admin                                                           |
+| `PUT`    | `/api/thread-sets/`    | Admin                                                                         |
+| `PUT`    | `/api/threads/`        | Admin                                                                         |
+| `PUT`    | `/api/users/`          | Auth, Admin (Foi liberado para  possibilitar alteração   da imagem de perfil) |
+| `DELETE` | `/api/thread-sets/`    | Admin                                                                         |
+| `DELETE` | `/api/threads/`        | Admin                                                                         |
+| `DELETE` | `/api/reponses/`       | Admin                                                                         |
