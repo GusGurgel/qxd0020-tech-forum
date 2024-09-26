@@ -100,13 +100,13 @@ async function handleBanChange(userId: number, event: any) {
         <div class="d-none d-lg-block col-2 shadow bg-dark text-light p-0 py-2 text-center">
           Image
         </div>
-        <div class="col-12 col-lg-4 shadow bg-dark text-light p-0 py-2 text-center">
+        <div class="col-8 col-lg-4 shadow bg-dark text-light p-0 py-2 text-center">
           Identification
         </div>
         <div class="shadow d-none d-lg-block col-3 bg-dark text-light p-0 py-2 text-center">
           Register Data
         </div>
-        <div class="shadow d-none d-lg-block col-3 bg-dark text-light p-0 py-2 text-center">
+        <div class="shadow d-lg-block col-4 col-lg-3 bg-dark text-light p-0 py-2 text-center">
           Banned
         </div>
         <UsersEntry v-for="user in users" :key="user.id" :user="{ ...user }" @handleBanChange="handleBanChange" />
