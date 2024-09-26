@@ -33,3 +33,16 @@
 * {
   font-family: 'Lexend Deca', sans-serif;
 }
+
+/*Evitar que imagens fiquem grandes de mais*/
+@media (min-width: 601px) {
+  img {
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 600px) {
+  img {
+    max-width: 250px;
+  }
+}

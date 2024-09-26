@@ -58,17 +58,4 @@ const userImage = computed(() => {
   width: 200px;
   height: 200px; 
 }
-
-
-@media (min-width: 601px) {
-  img {
-    max-width: 400px;
-  }
-}
-
-@media (max-width: 600px) {
-  img {
-    max-width: 250px;
-  }
-}
 </style>
