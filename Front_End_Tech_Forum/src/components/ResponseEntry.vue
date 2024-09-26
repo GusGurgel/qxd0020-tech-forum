@@ -41,7 +41,7 @@ const userImage = computed(() => {
         </div>
       </div>
     </div>
-    <div class="col-12 p-0 mt-3 p-4" :class="
+    <div class="col-12 p-0 mt-3 p-4 content" :class="
       editButtons ? 'col-lg-8' : 'col-lg-9'
     " v-html="marked.parse(response.content)">
     </div>
@@ -57,5 +57,9 @@ const userImage = computed(() => {
 .img-size {
   width: 200px;
   height: 200px; 
+}
+
+.content{
+  overflow: auto;
 }
 </style>
