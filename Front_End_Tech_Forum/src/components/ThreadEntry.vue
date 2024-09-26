@@ -24,14 +24,16 @@ const threadRoute = computed<string>(() => {
 })
 
 const lastResponseAuthor = ref<string>("")
-const lastResponseCreateAt = ref<string>("")
+const lastResponseContent = ref<string>("")
+const lastResponseCreateAt = ref<Date>(new Date())
 const stringLimit = 35
 
 if (props.thread.lastResponse) {
   const { lastResponse } = props.thread
 
   lastResponseAuthor.value = limitString(lastResponse.author.username, stringLimit)
-  lastResponseCreateAt.value = new Date(lastResponse.createdAt).toLocaleDateString("en-US")
+  lastResponseCreateAt.value = formatDate(new Date(lastResponse.createdAt))
+  lastResponseContent.value = limitString(lastResponse.content, stringLimit)
 }
 
 </script>
@@ -61,7 +63,10 @@ if (props.thread.lastResponse) {
           Author: <strong class="ubuntu-font">{{ lastResponseAuthor }}</strong>
         </div>
         <div>
-          Date: <strong class="font-ubunut">{{ lastResponseCreateAt }}</strong>
+          Date: <strong class="font-ubunut">{{ lastResponseCreateAt  }}</strong>
+        </div>
+        <div>
+          Content: <strong class="font-ubunut">{{ lastResponseContent }}</strong>
         </div>
       </div>
       <div v-else class="text-center">
